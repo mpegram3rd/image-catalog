@@ -1,0 +1,11 @@
+[project]
+name = "image-catalog"
+version = "0.1.0"
+description = "An searchable catalog of your images"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.121.2",
+    "openai>=2.8.1",
+    "python-dotenv>=1.2.1",
+]
