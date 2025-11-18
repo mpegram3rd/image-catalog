@@ -7,7 +7,7 @@ confidence level.  Finally output a list of colors that indicate the most common
 # Response Formatting:
 ```json
 {
-  "description": "The image contains a cat with a bow around her neck.",
+  "description": "The head and shoulders of a cat with a mix of white brown and black fur looking directly at the camera. It is wearing a bow around its neck.",
   "tags": [
       { "tag": "cat", "confidence": 0.98 },
       { "tag": "bow", "confidence": 0.82 }
