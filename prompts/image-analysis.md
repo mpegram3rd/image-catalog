@@ -14,9 +14,9 @@ a value indicating the relative percentage of the image that uses that color. On
       { "tag": "bow", "confidence": 0.82 }
    ],
   "colors" : [
-    {"brown": 0.2},
-    {"white": 0.7},
-    {"black": 0.05}
+    { "brown": 0.2 },
+    { "white": 0.7 },
+    { "black": 0.05 }
   ]
 }
 ```
