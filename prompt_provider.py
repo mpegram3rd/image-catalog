@@ -1,21 +1,22 @@
-from typing import Dict
+import asyncio
 
-from anyio import open_file
+import aiofiles
+import anyio
 
 
 class PromptProvider:
     def __init__(self, prompt_dir: str = 'prompts') -> None:
         self._prompt_dir = prompt_dir
-        self._prompts = Dict[str, str]() # prompt cache
+        self._prompts = {} # prompt cache
 
-    async def get_prompt_async(self, name: str):
-        prompt = self._prompts[name]
+    async def get_prompt_async(self, name: str) -> str:
+        prompt = self._prompts.get(name, None)
         if prompt:
             return prompt
 
         try:
 
-            async with open_file(self._prompt_dir + '/' + name + '.md', 'r') as garbin:
+            async with aiofiles.open(self._prompt_dir + '/' + name + '.md', 'r') as garbin:
                 prompt = await garbin.read()
             self._prompts[name] = prompt
             return prompt

@@ -10,3 +10,4 @@ class Config(BaseSettings):
     def __init__(self, env_file: str = '.env') -> None:
         super().__init__(_env_file=env_file)
 
+
