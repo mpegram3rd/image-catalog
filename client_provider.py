@@ -1,10 +1,9 @@
 from openai import OpenAI, AsyncOpenAI
 
-from config import Settings
+from config import Config
 
-settings = Settings(_env_file='../.env')
 
-def get_client():
+def get_client(config: Config):
     """
     Creates and returns an instance of the `OpenAI` compatible client configured with the
     specified base URL and API key.
@@ -16,13 +15,13 @@ def get_client():
         base URL and API key.
     :rtype: OpenAI
     """
-    print(f"Using model provider: {settings.llm_provider}")
+    print(f"Using model provider: {config.llm_provider}")
     return OpenAI(
-        base_url=settings.llm_url,
-        api_key=settings.llm_api_key
+        base_url=config.llm_url,
+        api_key=config.llm_api_key
     )
 
-def get_async_client():
+def get_async_client(config: Config):
     """
     Creates and returns an instance of the `AsyncOpenAI` compatible client configured with the
     specified base URL and API key.
@@ -34,8 +33,8 @@ def get_async_client():
         base URL and API key.
     :rtype: AsyncOpenAI
     """
-    print(f"Using model provider: {settings.llm_provider}")
+    print(f"Using model provider: {config.llm_provider}")
     return AsyncOpenAI(
-        base_url=settings.llm_url,
-        api_key=settings.llm_api_key
+        base_url=config.llm_url,
+        api_key=config.llm_api_key
     )
