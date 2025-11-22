@@ -3,7 +3,12 @@ import asyncio
 from client_provider import get_client
 from config import Config
 from indexer.image_handler import encode_image_async
+from metadata_repository import generate_embeddings
+from models.analysis_result import AnalysisResult
 from prompt_provider import PromptProvider
+
+def map_response(response) -> AnalysisResult:
+    return AnalysisResult()
 
 async def main() -> None:
 
@@ -34,6 +39,9 @@ async def main() -> None:
         ]
     )
 
+    results = map_response(response)
+
+    embeddings = generate_embeddings(response.choices[0].message.content)
     print(response.choices[0].message.content)
 
 asyncio.run(main())
