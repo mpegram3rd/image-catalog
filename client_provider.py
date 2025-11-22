@@ -2,7 +2,6 @@ from openai import OpenAI, AsyncOpenAI
 
 from config import Config
 
-
 def get_client(config: Config):
     """
     Creates and returns an instance of the `OpenAI` compatible client configured with the
@@ -16,6 +15,8 @@ def get_client(config: Config):
     :rtype: OpenAI
     """
     print(f"Using model provider: {config.llm_provider}")
+    # TODD make it so we don't need to recreate the client everytime.
+
     return OpenAI(
         base_url=config.llm_url,
         api_key=config.llm_api_key
