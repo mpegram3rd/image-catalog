@@ -13,7 +13,7 @@ eb_client = get_client(config)
 def generate_embeddings(text: str) -> CreateEmbeddingResponse:
     embeddings = eb_client.embeddings.create(
         input = text,
-        model="text-embedding-qwen3-embedding-0.6b"
+        model=config.llm_embedding_model
     )
 
     return embeddings
