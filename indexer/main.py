@@ -3,12 +3,12 @@ from pathlib import Path
 import re
 import time
 
-from client_provider import get_client
+from ai.client_provider import get_client
 from config import Config
 from indexer.image_handler import encode_image_async
-from metadata_repository import generate_embeddings
+from repository.metadata_repository import generate_embeddings
 from models.analysis_result import AnalysisResult
-from prompt_provider import PromptProvider
+from ai.prompt_provider import PromptProvider
 
 def extract_json(response) -> str:
     pattern = r"```(?:json)?\s*(.*?)\s*```"
@@ -28,8 +28,8 @@ async def main() -> None:
 
     config = Config('../.env')
 
-    client = get_client(config)
-    prompt_provider = PromptProvider('../prompts')
+    client = get_client()
+    prompt_provider = PromptProvider('../ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
     base_path = Path('../images/')
