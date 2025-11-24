@@ -2,7 +2,7 @@ from openai import OpenAI, AsyncOpenAI
 
 from config import Config
 
-config = Config('../.env')
+config = Config('.env')
 client_cache = {
     "sync": None,
     "async": None

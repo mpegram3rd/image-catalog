@@ -4,7 +4,7 @@ from openai.types import CreateEmbeddingResponse
 from ai.client_provider import get_client
 from config import Config
 
-config = Config('../.env')
+config = Config('.env')
 
 dbclient = chromadb.PersistentClient(path="./data/metadata.db")
 

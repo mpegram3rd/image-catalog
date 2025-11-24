@@ -5,7 +5,7 @@ import time
 
 from ai.client_provider import get_client
 from config import Config
-from indexer.image_handler import encode_image_async
+from images.image_handler import encode_image_async
 from repository.metadata_repository import generate_embeddings
 from models.analysis_result import AnalysisResult
 from ai.prompt_provider import PromptProvider
@@ -26,13 +26,13 @@ def map_response(response) -> AnalysisResult:
 
 async def main() -> None:
 
-    config = Config('../.env')
+    config = Config('.env')
 
     client = get_client()
-    prompt_provider = PromptProvider('../ai/prompts')
+    prompt_provider = PromptProvider('ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
-    base_path = Path('../images/')
+    base_path = Path('photos/')
     for p in base_path.rglob("*"):
         if p.is_file() and p.suffix == '.jpg':
             print(f"Processing {p}...")
