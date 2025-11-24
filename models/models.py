@@ -1,5 +1,4 @@
 from typing import List
-
 from pydantic import BaseModel
 
 class TagData(BaseModel):
@@ -10,7 +9,11 @@ class ColorData(BaseModel):
     color: str
     frequency: float
 
-class AnalysisResult(BaseModel):
-    description: str
+class Metadata(BaseModel):
     tags: List[TagData]
     colors: List[ColorData]
+
+class AnalysisResult(Metadata):
+    description: str
+
+
