@@ -33,38 +33,38 @@ async def main() -> None:
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
     base_path = Path('photos/')
-    # for p in base_path.rglob("*"):
-    #     if p.is_file() and p.suffix == '.jpg':
-    #         print(f"Processing {p}...")
-    #         start_time = time.time()  # Record start time
-    #
-    #         image_data = await encode_image_async(p)
-    #
-    #         response = client.chat.completions.create(
-    #             model=config.llm_model,
-    #             messages=[
-    #                 {
-    #                     "role": "user",
-    #                     "content": [
-    #                         {"type": "text", "text": f"{prompt}"},
-    #                         {
-    #                             "type": "image_url",
-    #                             "image_url": {
-    #                                 "url": f"data:image/jpeg;base64,{image_data}"
-    #                             },
-    #                         },
-    #                     ],
-    #                 }
-    #             ]
-    #         )
-    #
-    #         results = map_response(response)
-    #         add_analysis(str(p), results)
-    #
-    #         end_time = time.time()  # Record end time
-    #
-    #         execution_time = end_time - start_time
-    #         print(f"Processing {p} took {execution_time:.4f} seconds")
+    for p in base_path.rglob("*"):
+        if p.is_file() and p.suffix == '.jpg':
+            print(f"Processing {p}...")
+            start_time = time.time()  # Record start time
+
+            image_data = await encode_image_async(p)
+
+            response = client.chat.completions.create(
+                model=config.llm_model,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": f"{prompt}"},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{image_data}"
+                                },
+                            },
+                        ],
+                    }
+                ]
+            )
+
+            results = map_response(response)
+            add_analysis(str(p), results)
+
+            end_time = time.time()  # Record end time
+
+            execution_time = end_time - start_time
+            print(f"Processing {p} took {execution_time:.4f} seconds")
     list_contents()
 
 asyncio.run(main())

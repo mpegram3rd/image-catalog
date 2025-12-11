@@ -32,17 +32,29 @@ metadata_collection = dbclient.get_or_create_collection(
 
 def add_analysis(image_path: str, data: AnalysisResult):
 
-    metadata = Metadata(
-        tags=data.tags,
-        colors=data.colors
-    )
+    # metadata = {
+    #     "tags": ", ".join(list(map(lambda tag: tag.tag, data.tags))),
+    #     "colors": ", ".join(list(map(lambda color: color.color, data.colors)))
+    # }
+    metadata = {
+        "tags": list(map(lambda tag: tag.tag, data.tags)),
+        "colors": list(map(lambda color: color.color, data.colors))
+    }
+    # metadata = Metadata(
+    #     tags = ", ".join(list(map(lambda tag: tag.tag, data.tags))),
+    #     colors=", ".join(list(map(lambda color: color.color, data.colors)))
+    # )
 
-    metadata_str = metadata.model_dump_json()
+    # metadata_str = metadata.model_dump_json()
 
     metadata_collection.add (
         ids=[image_path],
-        documents=[data.description] #,
-#        metadatas=[metadata_str]
+        documents=[data.description],
+        metadatas=[{
+            "tags": ["python", "vector-db", "chromadb"],
+            "scores": [0.5, 0.8, 0.9],
+            "misc": {"nested": ["a", "b", "c"]}  # nested structures also allowed
+        }]
     )
 
 def list_contents():
@@ -56,3 +68,11 @@ def list_contents():
         query_texts=["Fall leaves"]
     )
     print (result)
+
+    result2 = metadata_collection.query(
+        query_texts=[""],
+        where={
+            "colors": "red"
+        }
+    )
+    print (result2)

@@ -10,10 +10,12 @@ class ColorData(BaseModel):
     frequency: float
 
 class Metadata(BaseModel):
+    tags: str
+    colors: str
+
+class AnalysisResult(BaseModel):
     tags: List[TagData]
     colors: List[ColorData]
-
-class AnalysisResult(Metadata):
     description: str
 
 
