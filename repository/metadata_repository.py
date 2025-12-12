@@ -36,25 +36,28 @@ def add_analysis(image_path: str, data: AnalysisResult):
     #     "tags": ", ".join(list(map(lambda tag: tag.tag, data.tags))),
     #     "colors": ", ".join(list(map(lambda color: color.color, data.colors)))
     # }
-    metadata = {
-        "tags": list(map(lambda tag: tag.tag, data.tags)),
-        "colors": list(map(lambda color: color.color, data.colors))
-    }
-    # metadata = Metadata(
-    #     tags = ", ".join(list(map(lambda tag: tag.tag, data.tags))),
-    #     colors=", ".join(list(map(lambda color: color.color, data.colors)))
-    # )
+    # metadata = {
+    #     "tags": list(map(lambda tag: tag.tag, data.tags)),
+    #     "colors": list(map(lambda color: color.color, data.colors))
+    # }
+    metadata = Metadata(
+        tags = ", ".join(list(map(lambda tag: tag.tag, data.tags))),
+        colors=", ".join(list(map(lambda color: color.color, data.colors)))
+    )
 
     # metadata_str = metadata.model_dump_json()
 
     metadata_collection.add (
         ids=[image_path],
         documents=[data.description],
-        metadatas=[{
-            "tags": ["python", "vector-db", "chromadb"],
-            "scores": [0.5, 0.8, 0.9],
-            "misc": {"nested": ["a", "b", "c"]}  # nested structures also allowed
-        }]
+        metadatas=[metadata.model_dump()
+            # metadata.model_dump_json
+         #    {
+         #    "tags": ["python", "vector-db", "chromadb"],
+         #    "scores": [0.5, 0.8, 0.9],
+         #    "misc": {"nested": ["a", "b", "c"]}  # nested structures also allowed
+         # }
+        ]
     )
 
 def list_contents():
@@ -70,9 +73,12 @@ def list_contents():
     print (result)
 
     result2 = metadata_collection.query(
+        include=["metadatas", "documents"],
         query_texts=[""],
         where={
-            "colors": "red"
+            "colors": {
+                "$eq": "red"
+            }
         }
     )
     print (result2)
