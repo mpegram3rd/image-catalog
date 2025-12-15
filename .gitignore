@@ -177,4 +177,6 @@ pyrightconfig.json
 .python-version
 .idea/
 
+# ChromaDB
+*.bin
 *.sqlite3
