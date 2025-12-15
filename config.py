@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Config(BaseSettings):
     llm_model: str
+    llm_embedding_model: str
     llm_provider: str
     llm_url: str
     llm_api_key: str
