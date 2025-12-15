@@ -32,9 +32,9 @@ async def main() -> None:
     prompt_provider = PromptProvider('ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
-    base_path = Path('photos/')
+    base_path = Path('../photos/') # TODO Put this in the environment
     for p in base_path.rglob("*"):
-        if p.is_file() and p.suffix == '.jpg':
+        if p.is_file() and (p.suffix in ['.jpg', '.png']):
             print(f"Processing {p}...")
             start_time = time.time()  # Record start time
 
