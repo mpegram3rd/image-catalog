@@ -17,7 +17,7 @@ the relative percentage of the image that uses that color. Only provide the top 
   ],
  "colors" : [
    { "color": "brown", "frequency": 0.2 },
-   { "color": "white", "frequency": 0.7 },
+   { "color": "white", "frequency": 0.7 }
  ]
 }
 ```
