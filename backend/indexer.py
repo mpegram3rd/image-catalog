@@ -3,6 +3,8 @@ from pathlib import Path
 import re
 import time
 
+from openai.types.chat.completion_create_params import ResponseFormat
+
 from ai.client_provider import get_client
 from config import Config
 from images.image_handler import encode_image_async
@@ -11,14 +13,14 @@ from models.models import AnalysisResult
 from ai.prompt_provider import PromptProvider
 
 def extract_json(response) -> str:
-    pattern = r"```(?:json)?\s*(.*?)\s*```"
-    match = re.search(pattern, response.choices[0].message.content, flags=re.DOTALL)
-
-    if not match:
-        raise ValueError("No JSON code block found in the supplied text.")
-
-    json_str = match.group(1).strip()
-    return json_str
+    # pattern = r"```(?:json)?\s*(.*?)\s*```"
+    # match = re.search(pattern, response.choices[0].message.content, flags=re.DOTALL)
+    #
+    # if not match:
+    #     raise ValueError("No JSON code block found in the supplied text.")
+    #
+    # json_str = match.group(1).strip()
+    return response.choices[0].message.content.strip()
 
 def map_response(response) -> AnalysisResult:
     json_str = extract_json(response)
@@ -40,8 +42,9 @@ async def main() -> None:
 
             image_data = await encode_image_async(p)
 
-            response = client.chat.completions.create(
+            response = client.chat.completions.parse(
                 model=config.llm_model,
+                response_format=AnalysisResult,
                 messages=[
                     {
                         "role": "user",
@@ -59,6 +62,7 @@ async def main() -> None:
             )
 
             results = map_response(response)
+            print(results.model_dump_json(indent=2))
             add_analysis(str(p), results)
 
             end_time = time.time()  # Record end time
