@@ -62,7 +62,7 @@ async def main() -> None:
             )
 
             results = map_response(response)
-            print(results.model_dump_json(indent=2))
+            # print(results.model_dump_json(indent=2))
             add_analysis(str(p), results)
 
             end_time = time.time()  # Record end time
