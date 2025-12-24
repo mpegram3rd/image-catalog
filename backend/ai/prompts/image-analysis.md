@@ -1,7 +1,7 @@
 # Instructions
 Create a description of the attached image. IMPORTANT! DO NOT START WITH THE WORDS "THE IMAGE". 
 The description should include what is in the image and any action happening in the photo such that a blind person could 
-form a mental image of what the photo represents. If there is significant text in the image, extract that text as part of 
+form a mental picture of what the photo represents. If there is significant text in the image, extract that text as part of 
 the description. IMPORTANT! IF THERE IS NO TEXT IN THE IMAGE DO NOT SAY THAT. After providing a description, output a 
 list of tags in all lower case that would describe the contents of what is in the image with the associated confidence 
 level. Finally, output a list of colors that indicate the most common colors found in the image with a value indicating 
