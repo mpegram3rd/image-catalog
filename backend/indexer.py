@@ -3,6 +3,9 @@ from pathlib import Path
 import re
 import time
 
+from openai.types.chat import ChatCompletionMessageParam, ChatCompletionUserMessageParam, \
+    ChatCompletionContentPartImageParam, ChatCompletionContentPartTextParam
+from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 from openai.types.chat.completion_create_params import ResponseFormat
 
 from ai.client_provider import get_client
@@ -28,9 +31,11 @@ def map_response(response) -> AnalysisResult:
 
 async def main() -> None:
 
+    indexing_time = time.time()
     config = Config('.env')
 
     client = get_client()
+    print(f"Using model: {config.llm_model}")
     prompt_provider = PromptProvider('ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
@@ -46,18 +51,13 @@ async def main() -> None:
                 model=config.llm_model,
                 response_format=AnalysisResult,
                 messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": f"{prompt}"},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/jpeg;base64,{image_data}"
-                                },
-                            },
-                        ],
-                    }
+                    ChatCompletionUserMessageParam(
+                        role="user",
+                        content=[
+                            ChatCompletionContentPartTextParam(type="text", text = f"{prompt}"),
+                            ChatCompletionContentPartImageParam(type="image_url", image_url = ImageURL(url=f"data:image/jpeg;base64,{image_data}"))
+                        ]
+                    )
                 ]
             )
 
@@ -69,6 +69,8 @@ async def main() -> None:
 
             execution_time = end_time - start_time
             print(f"Processing {p} took {execution_time:.4f} seconds")
+    indexing_end = time.time()
+    print(f"Indexing took {indexing_end - indexing_time:.4f} seconds")
     list_contents()
 
 asyncio.run(main())

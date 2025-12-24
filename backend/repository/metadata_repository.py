@@ -1,7 +1,8 @@
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
+from chromadb.api import CreateCollectionConfiguration
+from chromadb.api.collection_configuration import CreateHNSWConfiguration
 
-from ai.client_provider import get_client
 from config import Config
 from models.models import AnalysisResult, Metadata
 
@@ -20,23 +21,23 @@ embedding_func = embedding_functions.OpenAIEmbeddingFunction(
 metadata_collection = dbclient.get_or_create_collection(
     name="metadata",
     embedding_function=embedding_func,
-    configuration = {
-        "hnsw": {
-            "space": "cosine",
-            "ef_construction": 200
-        }
-    }
+    configuration = CreateCollectionConfiguration(
+        hnsw = CreateHNSWConfiguration(
+                space = "cosine",
+                ef_construction = 200
+        )
+    )
 )
 
 description_collection = dbclient.get_or_create_collection(
     name="descriptions",
     embedding_function=embedding_func,
-    configuration={
-        "hnsw": {
-            "space": "cosine",
-            "ef_construction": 200
-        }
-    }
+    configuration=CreateCollectionConfiguration(
+        hnsw=CreateHNSWConfiguration(
+            space="cosine",
+            ef_construction=200
+        )
+    )
 )
 
 
