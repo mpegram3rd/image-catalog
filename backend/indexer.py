@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import time
 
+from dotenv import load_dotenv
 from openai.types.chat import ChatCompletionMessageParam, ChatCompletionUserMessageParam, \
     ChatCompletionContentPartImageParam, ChatCompletionContentPartTextParam
 from openai.types.chat.chat_completion_content_part_image_param import ImageURL
@@ -14,6 +15,9 @@ from images.image_handler import encode_image_async
 from repository.metadata_repository import add_analysis, list_contents
 from models.models import AnalysisResult
 from ai.prompt_provider import PromptProvider
+from repository.multimodal_repository import add_multimodal
+
+load_dotenv()
 
 def extract_json(response) -> str:
     # pattern = r"```(?:json)?\s*(.*?)\s*```"
@@ -64,6 +68,7 @@ async def main() -> None:
             results = map_response(response)
             # print(results.model_dump_json(indent=2))
             add_analysis(str(p), results)
+            add_multimodal(str(p), results)
 
             end_time = time.time()  # Record end time
 

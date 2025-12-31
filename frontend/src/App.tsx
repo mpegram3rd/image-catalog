@@ -2,13 +2,13 @@ import '@mantine/core/styles.css';
 
 import './App.css'
 import { MantineProvider } from "@mantine/core";
-import ImageMatchContainer from "./image-match/ImageMatchContainer.tsx";
+import ImageSearchContainer from "./image-search/ImageSearchContainer.tsx";
 
 function App() {
 
   return (
     <MantineProvider>
-        <ImageMatchContainer/>
+        <ImageSearchContainer/>
     </MantineProvider>
   )
 }
