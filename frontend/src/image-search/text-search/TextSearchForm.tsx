@@ -1,5 +1,6 @@
 import {Box, TextInput} from "@mantine/core";
 import {useForm} from "@mantine/form";
+import {IconUpload} from "@tabler/icons-react";
 
 export default function TextSearchForm() {
     const form = useForm({
@@ -20,10 +21,14 @@ export default function TextSearchForm() {
                 w={400}
             >
                 <TextInput
+                    label="Search Text"
                     placeholder="Image Description"
                     key={form.key('searchText')}
                     {...form.getInputProps('searchText')}
+                    color="var(--mantine-color-blue-6)"
+                    rightSection={<IconUpload size={20} color="var(--mantine-color-blue-6)" />}
                 />
+                Drag and Drop an Image to find Similar ones
             </Box>
         </form>
     )

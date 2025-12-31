@@ -7,8 +7,8 @@ import ImageSearchContainer from "./image-search/ImageSearchContainer.tsx";
 function App() {
 
   return (
-    <MantineProvider>
-        <ImageSearchContainer/>
+    <MantineProvider >
+        <ImageSearchContainer />
     </MantineProvider>
   )
 }
