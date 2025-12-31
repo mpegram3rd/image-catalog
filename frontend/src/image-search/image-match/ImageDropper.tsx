@@ -5,6 +5,7 @@ import {Group, Text} from '@mantine/core';
 export default function ImageDropper() {
     return (
             <Dropzone.FullScreen
+                className="dropcontaine"
                 active={true}
                 accept={[
                     MIME_TYPES.png,
@@ -13,7 +14,7 @@ export default function ImageDropper() {
                 onDrop={() => { console.log('Dropzone dropped'); }}
                 onReject={() => { console.log('Dropzone rejected'); }}
             >
-                <Group justify="center" gap="xl" mih={220} >
+                <Group justify="center" gap="xl" mih={"100vh"} miw={"100vw"}>
                     {/* children */}
                     <Dropzone.Accept>
                         <IconUpload size={52} color="var(--mantine-color-blue-6)" stroke={1.5} />
