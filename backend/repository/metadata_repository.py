@@ -61,8 +61,7 @@ def add_analysis(image_path: str, data: AnalysisResult):
     description_collection.add (
         ids=[image_path],
         documents=[data.description],
-        metadatas=[metadata.model_dump()
-        ]
+        metadatas=[metadata.model_dump()]
     )
 
     metadata_collection.add(
