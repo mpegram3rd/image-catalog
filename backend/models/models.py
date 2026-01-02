@@ -18,4 +18,8 @@ class AnalysisResult(BaseModel):
     colors: List[ColorData]
     description: str
 
+class SearchResult(BaseModel):
+    image_path: str
+    description: str
+
 

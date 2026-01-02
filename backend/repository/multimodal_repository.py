@@ -31,3 +31,4 @@ def add_multimodal(image_path: str, data: AnalysisResult):
         uris=[image_path],
         metadatas=[{"description": data.description}]
     )
+
