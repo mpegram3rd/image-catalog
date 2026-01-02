@@ -1,6 +1,5 @@
-interface ImageMatchResult {
-    path: string;
+export interface ImageMatchResult {
+    image_path: string;
     description: string;
-    confidence: number;
 }
 
