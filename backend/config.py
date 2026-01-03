@@ -8,6 +8,8 @@ class Config(BaseSettings):
     llm_url: str
     llm_api_key: str
     hf_token: str
+    photos_base_path: str
+    thumbnail_base_path: str
 
     def __init__(self, env_file: str = '.env') -> None:
         super().__init__(_env_file=env_file)

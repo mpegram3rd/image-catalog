@@ -21,5 +21,6 @@ class AnalysisResult(BaseModel):
 class SearchResult(BaseModel):
     image_path: str
     description: str
+    distance: float
 
 

@@ -20,13 +20,6 @@ from repository.multimodal_repository import add_multimodal
 load_dotenv()
 
 def extract_json(response) -> str:
-    # pattern = r"```(?:json)?\s*(.*?)\s*```"
-    # match = re.search(pattern, response.choices[0].message.content, flags=re.DOTALL)
-    #
-    # if not match:
-    #     raise ValueError("No JSON code block found in the supplied text.")
-    #
-    # json_str = match.group(1).strip()
     return response.choices[0].message.content.strip()
 
 def map_response(response) -> AnalysisResult:
@@ -43,7 +36,7 @@ async def main() -> None:
     prompt_provider = PromptProvider('ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
-    base_path = Path('../photos/') # TODO Put this in the environment
+    base_path = Path(config.photos_base_path)
     for p in base_path.rglob("*"):
         if p.is_file() and (p.suffix in ['.jpg', '.png']):
             print(f"Processing {p}...")
@@ -67,7 +60,7 @@ async def main() -> None:
 
             results = map_response(response)
             # print(results.model_dump_json(indent=2))
-            add_analysis(str(p), results)
+            # add_analysis(str(p), results)
             add_multimodal(str(p), results)
 
             end_time = time.time()  # Record end time

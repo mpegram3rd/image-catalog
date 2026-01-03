@@ -4,7 +4,7 @@ from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import SearchResult
-from repository.multimodal_repository import find_by_image
+from repository.multimodal_repository import find_by_image, SMALL_CUTOFF_THRESHOLD
 
 app = FastAPI()
 
@@ -22,19 +22,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# @app.get("/")
-# async def root():
-#     return {"message": "Hello World"}
-#
 @app.post("/api/uploadfile")
-async def create_upload_file(file: UploadFile) -> SearchResult:
+async def create_upload_file(file: UploadFile) -> list[SearchResult]:
     img = Image.open(file.file)
-    print(f"Image Details: {img.format}")
-    find_by_image(img)
-    return SearchResult(
-        image_path = file.filename,
-        description = "This is a test description"
-    )
+
+    results = find_by_image(img, SMALL_CUTOFF_THRESHOLD)
+    print(f"Search Image Details: {img.format}, Found: {results[0].image_path} w/ Similarity: {results[0].distance}\nDescription: {results[0].description}")
+
+    return results
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
