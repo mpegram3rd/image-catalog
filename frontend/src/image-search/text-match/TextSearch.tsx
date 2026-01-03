@@ -17,6 +17,7 @@ export default function TextSearch() {
     const handleSubmit = async (formValues: TextSearchRequest) => {
         // TODO make API call
         console.log(JSON.stringify(formValues, null, 2));
+        form.reset();
     };
 
     return (
@@ -24,7 +25,7 @@ export default function TextSearch() {
             <TextInput
                 label="Search Text"
                 placeholder="Describe the image you want to find..."
-                className={styles.searchField}
+                classNames={{ wrapper: styles.searchField} }
                 miw={600}
                 mih={rem(120)}
                 key={form.key('searchText')}
