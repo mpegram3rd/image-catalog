@@ -1,18 +1,16 @@
 import asyncio
 from pathlib import Path
-import re
 import time
 
 from dotenv import load_dotenv
-from openai.types.chat import ChatCompletionMessageParam, ChatCompletionUserMessageParam, \
+from openai.types.chat import ChatCompletionUserMessageParam, \
     ChatCompletionContentPartImageParam, ChatCompletionContentPartTextParam
 from openai.types.chat.chat_completion_content_part_image_param import ImageURL
-from openai.types.chat.completion_create_params import ResponseFormat
 
 from ai.client_provider import get_client
-from config import Config
+from configuration.config import Config
 from images.image_handler import encode_image_async
-from repository.metadata_repository import add_analysis, list_contents
+from repository.metadata_repository import list_contents
 from models.models import AnalysisResult
 from ai.prompt_provider import PromptProvider
 from repository.multimodal_repository import add_multimodal
@@ -29,7 +27,7 @@ def map_response(response) -> AnalysisResult:
 async def main() -> None:
 
     indexing_time = time.time()
-    config = Config('.env')
+    config = Config()
 
     client = get_client()
     print(f"Using model: {config.llm_model}")

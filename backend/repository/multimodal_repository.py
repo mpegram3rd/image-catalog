@@ -8,8 +8,8 @@ from chromadb.api.collection_configuration import CreateHNSWConfiguration
 from chromadb.utils.data_loaders import ImageLoader
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
 
-from config import Config
-from models.models import AnalysisResult, Metadata, SearchResult
+from configuration.config import Config
+from models.models import AnalysisResult, SearchResult
 import numpy as np
 
 ## Threshold distance values for filtering results
@@ -17,7 +17,7 @@ SMALL_CUTOFF_THRESHOLD: Final = 0.05
 MEDIUM_CUTOFF_THRESHOLD: Final = 0.1
 YUGE_CUTOFF_THRESHOLD: Final = 0.3
 
-config = Config('.env')
+config = Config()
 
 dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/multimodal.db")
 data_loader = ImageLoader()

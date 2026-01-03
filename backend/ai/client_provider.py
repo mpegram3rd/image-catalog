@@ -1,6 +1,6 @@
 from openai import OpenAI, AsyncOpenAI
 
-from config import Config
+from configuration.config import Config
 
 config = Config('.env')
 client_cache = {

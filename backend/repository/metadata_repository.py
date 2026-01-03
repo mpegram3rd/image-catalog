@@ -3,10 +3,10 @@ import chromadb.utils.embedding_functions as embedding_functions
 from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
 
-from config import Config
+from configuration.config import Config
 from models.models import AnalysisResult, Metadata
 
-config = Config('.env')
+config = Config()
 
 dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/image_data.db")
 
