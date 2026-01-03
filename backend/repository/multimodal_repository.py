@@ -56,6 +56,7 @@ def transform(results: QueryResult, cutoff_threshold: float) -> list[SearchResul
     # The closest distance to our search item.  We're going to use this distance
     # to calculate a threshold by which search results are "too far away" to be worth consideration.
     initial_distance = distances[0]
+    # TODO If initial distance is too far (? > 0.5 ?) then maybe return nothing.
 
     index = 0
     while index < len(ids):
