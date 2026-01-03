@@ -1,8 +1,10 @@
 import uvicorn
+from PIL import Image
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import SearchResult
+from repository.multimodal_repository import find_by_image
 
 app = FastAPI()
 
@@ -26,6 +28,9 @@ app.add_middleware(
 #
 @app.post("/api/uploadfile")
 async def create_upload_file(file: UploadFile) -> SearchResult:
+    img = Image.open(file.file)
+    print(f"Image Details: {img.format}")
+    find_by_image(img)
     return SearchResult(
         image_path = file.filename,
         description = "This is a test description"
