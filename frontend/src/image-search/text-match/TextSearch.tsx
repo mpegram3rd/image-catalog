@@ -1,18 +1,35 @@
-import {Textarea} from "@mantine/core";
-import {useState} from "react";
+import {rem, TextInput} from "@mantine/core";
+import {isNotEmpty, useForm} from "@mantine/form";
+import type {TextSearchRequest} from "../../models/TextSearchRequest.ts";
+import styles from "./TextSearch.module.css";
 
 export default function TextSearch() {
-    const [text, setText] = useState('');
+    const form = useForm({
+        mode: 'uncontrolled',
+        initialValues: {
+            searchText: ''
+        },
+        validate: {
+            searchText: isNotEmpty('This field is required'),
+        }
+    });
+
+    const handleSubmit = async (formValues: TextSearchRequest) => {
+        // TODO make API call
+        console.log(JSON.stringify(formValues, null, 2));
+    };
 
     return (
-        <Textarea
-            label="Search Text"
-            placeholder="Describe the image you want to find..."
-            minRows={4}
-            value={text}
-            miw={600}
-            autosize
-            onChange={(event) => setText(event.currentTarget.value)}
-        />
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput
+                label="Search Text"
+                placeholder="Describe the image you want to find..."
+                className={styles.searchField}
+                miw={600}
+                mih={rem(120)}
+                key={form.key('searchText')}
+                {...form.getInputProps('searchText')}
+            />
+        </form>
     )
 }

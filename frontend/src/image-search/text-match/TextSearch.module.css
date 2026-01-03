@@ -1,0 +1,6 @@
+.search-field {
+    display: flex;
+    margin: 10px;
+    border: 2px dashed var(--mantine-color-blue-6) var(--mantine-radius-md);
+    background: var(--mantine-color-blue-light);
+}

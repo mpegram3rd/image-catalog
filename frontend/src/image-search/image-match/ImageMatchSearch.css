@@ -1,9 +1,0 @@
-.dropcontainer {
-    width: 100vw;   /* 100% of the viewport width */
-    height: 100vh;
-    background: #dcdcdc;
-}
-
-.dropcontainer:hover {
-    border: 2px solid #c0c0c0;
-}
