@@ -19,7 +19,7 @@ YUGE_CUTOFF_THRESHOLD: Final = 0.3
 
 config = Config('.env')
 
-dbclient = chromadb.PersistentClient(path="./data/multimodal.db")
+dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/multimodal.db")
 data_loader = ImageLoader()
 embedding_function = OpenCLIPEmbeddingFunction()
 

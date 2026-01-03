@@ -8,7 +8,7 @@ from models.models import AnalysisResult, Metadata
 
 config = Config('.env')
 
-dbclient = chromadb.PersistentClient(path="./data/image_data.db")
+dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/image_data.db")
 
 embedding_func = embedding_functions.OpenAIEmbeddingFunction(
                 api_key=config.llm_api_key,
