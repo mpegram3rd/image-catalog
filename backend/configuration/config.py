@@ -10,7 +10,6 @@ class Config(BaseSettings):
     hf_token: str
     photos_base_path: str
     db_base_path: str
-    thumbnails_base_path: str
     thumbnail_width: int
     thumbnail_height: int
 
