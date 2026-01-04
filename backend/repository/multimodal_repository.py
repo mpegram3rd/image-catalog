@@ -49,7 +49,7 @@ def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str):
         uris=[image_path],
         metadatas=[{"description": data.description, 'thumbnail': thumbnail}],
     )
-    print(f"- Adding to Multimodal collection took took {time.time() - timer:.4f} seconds")
+    print(f"  - Adding to Multimodal collection took took {time.time() - timer:.4f} seconds")
 
 def find_by_image(image_data: Image.Image, cutoff_threshold: float) -> list[SearchResult]:
     img_array = np.array(image_data)
