@@ -6,9 +6,7 @@ import '@mantine/core/styles.css';
 
 const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
     return (
-        <SimpleGrid
-            cols={4}
-        >
+        <SimpleGrid cols={4} >
             { results.map((result: ImageMatchResult) => (
                     <div>
                         <Image
