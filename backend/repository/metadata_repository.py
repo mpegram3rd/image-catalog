@@ -4,7 +4,8 @@ from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
 
 from configuration.config import Config
-from models.models import AnalysisResult, Metadata
+from models.models import AnalysisResult, Metadata, SearchResult
+from repository.search_transformer import transform
 
 print("Initializing Metadata Repository")
 config = Config()
@@ -70,6 +71,16 @@ def add_analysis(image_path: str, data: AnalysisResult):
         ids=[image_path],
         documents=[data.model_dump_json()]
     )
+
+
+def find_by_text(search_text: str, cutoff_threshold: float) -> list[SearchResult]:
+    results = description_collection.query(
+        query_texts=[search_text]
+    )
+
+    search_results = transform(results, cutoff_threshold)
+
+    return search_results
 
 def list_contents():
     batch= description_collection.get(

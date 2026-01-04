@@ -4,7 +4,8 @@ from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import SearchResult, TextSearchRequest
-from repository.multimodal_repository import find_by_image, SMALL_CUTOFF_THRESHOLD, find_by_text
+from repository.filtering_thresholds import SMALL_CUTOFF_THRESHOLD, MEDIUM_CUTOFF_THRESHOLD
+from repository.multimodal_repository import find_by_image, find_by_text
 
 app = FastAPI()
 
@@ -34,7 +35,7 @@ async def search_by_image(file: UploadFile) -> list[SearchResult]:
 @app.post("/api/search/text")
 async def search_by_text(search: TextSearchRequest) -> list[SearchResult]:
 
-    results = find_by_text(search.searchText, SMALL_CUTOFF_THRESHOLD)
+    results = find_by_text(search.searchText, MEDIUM_CUTOFF_THRESHOLD)
     print(f"Search Text: {search.searchText}, Found: {results[0].image_path} w/ Similarity: {results[0].distance}\nDescription: {results[0].description}")
 
     return results
