@@ -12,17 +12,17 @@ results
 ```text
 Create an example of how to take a Pillow `Image`, generate a thumbnail constrained to a fixed width and height but maintaining the proper aspect ratio and converting that thumbnail in its JPEG representation with 80% compression as base64 in Python
 ```
-**Model: ** `google/gemma-3-12b`
-**Discussion: ** Provided a good example of the code necessary for doing this.  Also provided detailed explanation.  I was able to work with the example and adapt it to my purposes.
-
+**Model:** `google/gemma-3-12b`
+**Discussion:** Provided a good example of the code necessary for doing this.  Also provided detailed explanation.  I was able to work with the example and adapt it to my purposes.
+---
 
 
 **Prompt**
 ```text
 Prompt
 ```
-**Model: ** `google/gemma-3-12b`
-**Discussion: ** Observations
+**Model:** `google/gemma-3-12b`
+**Discussion:** Observations
 ---
 
 
