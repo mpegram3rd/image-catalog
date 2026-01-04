@@ -38,6 +38,7 @@ const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults
         await uploadFile(files[0])
             .then((searchResults   ) => {
                 setSearchResults(searchResults);
+                console.log(`Search Results: ${JSON.stringify(searchResults)}`);
             });
         console.log('File upload completed');
     }
