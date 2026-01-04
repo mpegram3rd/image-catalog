@@ -1,3 +1,4 @@
+import time
 from typing import Final
 
 import chromadb
@@ -39,14 +40,16 @@ multimodal_collection =  dbclient.get_or_create_collection(
 
 print()
 
-def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str) -> SearchResult:
+def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str):
     server_friendly_path = image_path[len(config.photos_base_path):]
+
+    timer = time.time()
     multimodal_collection.add(
         ids=[server_friendly_path],
         uris=[image_path],
         metadatas=[{"description": data.description, 'thumbnail': thumbnail}],
     )
-
+    print(f"- Adding to Multimodal collection took took {time.time() - timer:.4f} seconds")
 
 def find_by_image(image_data: Image.Image, cutoff_threshold: float) -> list[SearchResult]:
     img_array = np.array(image_data)

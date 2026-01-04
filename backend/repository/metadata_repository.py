@@ -1,3 +1,5 @@
+import time
+
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
 from chromadb.api import CreateCollectionConfiguration
@@ -68,16 +70,20 @@ def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
     # metadata_str = metadata.model_dump_json()
     server_friendly_path = image_path[len(config.photos_base_path):]
 
+    timer = time.time()
     description_collection.add (
         ids=[server_friendly_path],
         documents=[data.description],
         metadatas=[metadata.model_dump()]
     )
+    print(f"- Adding to Description collection took took {time.time() - timer:.4f} seconds")
 
+    timer = time.time()
     metadata_collection.add(
         ids=[image_path],
         documents=[data.model_dump_json()]
     )
+    print(f"- Adding to Metadata collection took took {time.time() - timer:.4f} seconds")
 
 
 def find_by_text(search_text: str, cutoff_threshold: float) -> list[SearchResult]:
