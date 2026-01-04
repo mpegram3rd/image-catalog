@@ -31,7 +31,7 @@ async def main() -> None:
     config = Config()
 
     client = get_client()
-    print(f"Using model: {config.llm_model}")
+    print(f"Using LLM model (for Image Analysis): {config.llm_model}")
     prompt_provider = PromptProvider('ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 

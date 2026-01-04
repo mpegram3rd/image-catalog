@@ -10,8 +10,8 @@ from repository.search_transformer import transform
 print("Initializing Metadata Repository")
 config = Config()
 
-dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/image_data.db")
-
+# Fetch embedding model for multimodal data
+print("- Initializing OpenAI compatible embedding model")
 embedding_func = embedding_functions.OpenAIEmbeddingFunction(
                 api_key=config.llm_api_key,
                 api_base=config.llm_url,
@@ -20,6 +20,10 @@ embedding_func = embedding_functions.OpenAIEmbeddingFunction(
                 model_name=config.llm_embedding_model
             )
 
+print("- Connecting to DB")
+dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/image_data.db")
+
+print("- Setting up Metadata Collection")
 metadata_collection = dbclient.get_or_create_collection(
     name="metadata",
     embedding_function=embedding_func,
@@ -31,6 +35,7 @@ metadata_collection = dbclient.get_or_create_collection(
     )
 )
 
+print("- Setting up Description Collection")
 description_collection = dbclient.get_or_create_collection(
     name="descriptions",
     embedding_function=embedding_func,
@@ -42,8 +47,9 @@ description_collection = dbclient.get_or_create_collection(
     )
 )
 
+print()
 
-def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str | None = None):
+def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
 
     # metadata = {
     #     "tags": ", ".join(list(map(lambda tag: tag.tag, data.tags))),

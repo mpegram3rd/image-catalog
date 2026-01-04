@@ -16,10 +16,15 @@ from repository.search_transformer import transform
 print("Initializing Multimodal Repository")
 config = Config()
 
-dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/multimodal.db")
-data_loader = ImageLoader()
+# Fetch embedding model for multimodal data
+print("- Initializing Multimodal embedding model")
 embedding_function = OpenCLIPEmbeddingFunction()
 
+print("- Connecting to DB")
+dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/multimodal.db")
+data_loader = ImageLoader()
+
+print("- Setting up Multimodal Collection")
 multimodal_collection =  dbclient.get_or_create_collection(
     name='multimodal_collection',
     embedding_function=embedding_function,
@@ -32,7 +37,9 @@ multimodal_collection =  dbclient.get_or_create_collection(
     )
 )
 
-def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str | None = None) -> SearchResult:
+print()
+
+def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str) -> SearchResult:
     server_friendly_path = image_path[len(config.photos_base_path):]
     multimodal_collection.add(
         ids=[server_friendly_path],

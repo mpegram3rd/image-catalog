@@ -1,8 +1,9 @@
 import base64
 import io
+import time
 
 import aiofiles
-from PIL.Image import Image
+from PIL import Image
 
 
 async def encode_image_async(image_path: str) -> str:
@@ -14,8 +15,8 @@ async def encode_image_async(image_path: str) -> str:
         raise
 
 async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: int, thumbnail_height: int) -> str | None:
+    thumbnail_time = time.time()
     try:
-
         # Decode the base64 string
         image_data = base64.b64decode(image_base64)
 
@@ -41,10 +42,16 @@ async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: in
 
         # Convert to a JPEG with 80% quality in memory
         jpeg_buffer = io.BytesIO()
-        thumbnail_image.save(jpeg_buffer, format="JPEG", quality=80)
-        return base64.b64encode(jpeg_buffer.getvalue()).decode("utf-8")
+        thumbnail_image.save(jpeg_buffer, format="PNG", quality=80)
+        b64_thumbnail = base64.b64encode(jpeg_buffer.getvalue()).decode("utf-8")
+
+        finish_time = time.time()
+        execution_time = finish_time - thumbnail_time
+        print(f"- Thumbnail generation took took {execution_time:.4f} seconds")
+
+        return b64_thumbnail
 
     except Exception as e:
         print(f"An unexpected error occurred: {e}")  # Catch other potential errors
-        return None
+        raise
 
