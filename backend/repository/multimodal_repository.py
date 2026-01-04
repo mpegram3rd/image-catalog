@@ -32,12 +32,12 @@ multimodal_collection =  dbclient.get_or_create_collection(
     )
 )
 
-def add_multimodal(image_path: str, data: AnalysisResult):
+def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str | None = None) -> SearchResult:
     server_friendly_path = image_path[len(config.photos_base_path):]
     multimodal_collection.add(
         ids=[server_friendly_path],
         uris=[image_path],
-        metadatas=[{"description": data.description}]
+        metadatas=[{"description": data.description, 'thumbnail': thumbnail}],
     )
 
 

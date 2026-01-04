@@ -8,7 +8,7 @@ try yourself to see how the results look.  I'll try to capture the `prompt` whic
 results
 
 # Prompts
-**Intent:** I wanted to generate thumbnails and store them as base64 lower quality jpeg images in the vector DB's metadata. 
+**Intent:** I wanted to generate `thumbnails` and store them as `base64` lower quality `jpeg` images in the vector DB's metadata. 
 
 **Model:** `google/gemma-3-12b`
 

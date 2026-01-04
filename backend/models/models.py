@@ -12,6 +12,7 @@ class ColorData(BaseModel):
 class Metadata(BaseModel):
     tags: str
     colors: str
+    thumbnail: str
 
 class AnalysisResult(BaseModel):
     tags: List[TagData]
@@ -21,6 +22,7 @@ class AnalysisResult(BaseModel):
 class SearchResult(BaseModel):
     image_path: str
     description: str
+    thumbnail: str
     distance: float
 
 

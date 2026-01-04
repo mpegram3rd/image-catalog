@@ -43,7 +43,7 @@ description_collection = dbclient.get_or_create_collection(
 )
 
 
-def add_analysis(image_path: str, data: AnalysisResult):
+def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str | None = None):
 
     # metadata = {
     #     "tags": ", ".join(list(map(lambda tag: tag.tag, data.tags))),
@@ -55,7 +55,8 @@ def add_analysis(image_path: str, data: AnalysisResult):
     # }
     metadata = Metadata(
         tags = ", ".join(list(map(lambda tag: tag.tag, data.tags))),
-        colors=", ".join(list(map(lambda color: color.color, data.colors)))
+        colors=", ".join(list(map(lambda color: color.color, data.colors))),
+        thumbnail=thumbnail
     )
 
     # metadata_str = metadata.model_dump_json()

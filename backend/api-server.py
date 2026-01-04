@@ -27,7 +27,7 @@ app.add_middleware(
 async def search_by_image(file: UploadFile) -> list[SearchResult]:
     img = Image.open(file.file)
 
-    results = find_by_image(img, SMALL_CUTOFF_THRESHOLD)
+    results = find_by_image(img, MEDIUM_CUTOFF_THRESHOLD)
     print(f"Search Image Details: {img.format}, Found: {results[0].image_path} w/ Similarity: {results[0].distance}\nDescription: {results[0].description}")
 
     return results

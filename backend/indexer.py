@@ -9,7 +9,7 @@ from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 
 from ai.client_provider import get_client
 from configuration.config import Config
-from images.image_handler import encode_image_async
+from images.image_handler import encode_image_async, create_thumbnail_as_base64_async
 from repository.metadata_repository import list_contents, add_analysis
 from models.models import AnalysisResult
 from ai.prompt_provider import PromptProvider
@@ -60,9 +60,10 @@ async def main() -> None:
             )
 
             results = map_response(response)
+            thumbnail = await create_thumbnail_as_base64_async(image_data, config.thumbnail_width, config.thumbnail_height)
 
-            add_analysis(str(p), results)
-            add_multimodal(str(p), results)
+            add_analysis(str(p), results, thumbnail)
+            add_multimodal(str(p), results, thumbnail)
 
             end_time = time.time()  # Record end time
 

@@ -39,6 +39,7 @@ def transform(results: QueryResult, cutoff_threshold: float) -> list[SearchResul
             SearchResult(
                 image_path=ids[index],
                 description=metadata[index]['description'],
+                thumbnail=metadata[index]['thumbnail'],
                 distance = distances[index]
             )
         )
