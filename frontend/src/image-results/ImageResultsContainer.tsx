@@ -1,31 +1,29 @@
 import type {ImageMatchResult, ImageSearchResults} from "../models/ImageSearchResults.ts";
 import * as React from "react";
-import {Grid, Image} from "@mantine/core";
+import {Image, SimpleGrid} from "@mantine/core";
 
 import '@mantine/core/styles.css';
-import '@mantine/carousel/styles.css';
 
 const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
     return (
-        <Grid
-            miw={"80%"}
-            align={"center"}
+        <SimpleGrid
+            cols={4}
         >
             { results.map((result: ImageMatchResult) => (
-                    <Grid.Col
-                        span={3}
-                    >
+                    <div>
                         <Image
                             width={"256px"}
                             height={"256px"}
+                            maw={"256px"}
+                            mah={"256px"}
                             radius='md'
                             src={result.thumbnail}
                             alt={result.description}
                         />
-                    </Grid.Col>
+                    </div>
                 ))
             }
-        </Grid>
+        </SimpleGrid>
     );
 }
 
