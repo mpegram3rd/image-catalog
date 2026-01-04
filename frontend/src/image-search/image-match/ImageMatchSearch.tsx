@@ -106,7 +106,7 @@ const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults
                         </Group>
                     </Box>
                 ) : (
-                    <TextSearch/>
+                    <TextSearch setSearchResults={setSearchResults}/>
                 )}
             </Dropzone>
     );
