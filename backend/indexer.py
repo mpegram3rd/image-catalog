@@ -31,7 +31,7 @@ async def main() -> None:
     config = Config()
 
     client = get_client()
-    print(f"Using LLM model (for Image Analysis): {config.llm_model}")
+    print(f"Using LLM model (for Image Analysis): {config.llm_model}\n-------\n")
     prompt_provider = PromptProvider('ai/prompts')
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
@@ -60,15 +60,22 @@ async def main() -> None:
             )
 
             results = map_response(response)
+            end_time = time.time()  # Record end time
+
+            execution_time = end_time - start_time
+            print(f"- Model analysis took {execution_time:.4f} seconds")
+
             thumbnail = await create_thumbnail_as_base64_async(image_data, config.thumbnail_width, config.thumbnail_height)
+
+            start_time = time.time()
 
             add_analysis(str(p), results, thumbnail)
             add_multimodal(str(p), results, thumbnail)
 
-            end_time = time.time()  # Record end time
-
+            end_time = time.time()
             execution_time = end_time - start_time
-            print(f"Processing {p} took {execution_time:.4f} seconds")
+            print(f"- Embedding and storing took {execution_time:.4f} seconds\n")
+
     indexing_end = time.time()
     print(f"Indexing {processed_images} images took {indexing_end - indexing_time:.4f} seconds")
 
