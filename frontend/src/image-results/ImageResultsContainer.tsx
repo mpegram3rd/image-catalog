@@ -1,43 +1,31 @@
-import {Carousel} from "@mantine/carousel";
-
 import type {ImageMatchResult, ImageSearchResults} from "../models/ImageSearchResults.ts";
 import * as React from "react";
-import {Image} from "@mantine/core";
+import {Grid, Image} from "@mantine/core";
 
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
-import styles from './ImageResultsContainer.module.css'
 
 const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
     return (
-        <div style={{ height: 400, display: 'flex' }}>
-        <Carousel
-            // height={600}
-            classNames={styles}
-            height="100%" flex={1}
-            slideSize={{ base: '100%', sm: '50%', md: '33.333333%' }}
-            slideGap={{ base: 0, sm: 'md' }}
-            controlsOffset="xs"
-            controlSize={15}
-            withControls={true}
-            withIndicators={false}
-            emblaOptions={{ loop: true, align: 'start', slidesToScroll: 3 }}
+        <Grid
+            miw={"80%"}
+            align={"center"}
         >
-            {results.map((result: ImageMatchResult) => (
-                    <Carousel.Slide>
+            { results.map((result: ImageMatchResult) => (
+                    <Grid.Col
+                        span={3}
+                    >
                         <Image
-                            maw={"200px"}
-                            mah={"200px"}
+                            width={"256px"}
+                            height={"256px"}
                             radius='md'
                             src={result.thumbnail}
                             alt={result.description}
                         />
-                        <div>{result.description}</div>
-                    </Carousel.Slide>
+                    </Grid.Col>
                 ))
             }
-        </Carousel>
-        </div>
+        </Grid>
     );
 }
 
