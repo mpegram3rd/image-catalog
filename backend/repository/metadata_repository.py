@@ -6,6 +6,7 @@ from chromadb.api.collection_configuration import CreateHNSWConfiguration
 from configuration.config import Config
 from models.models import AnalysisResult, Metadata
 
+print("Initializing Metadata Repository")
 config = Config()
 
 dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/image_data.db")

@@ -17,6 +17,7 @@ SMALL_CUTOFF_THRESHOLD: Final = 0.05
 MEDIUM_CUTOFF_THRESHOLD: Final = 0.1
 YUGE_CUTOFF_THRESHOLD: Final = 0.3
 
+print("Initializing Multimodal Repository")
 config = Config()
 
 dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/multimodal.db")

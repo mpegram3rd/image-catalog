@@ -26,6 +26,7 @@ def map_response(response) -> AnalysisResult:
 
 async def main() -> None:
 
+    print("Starting Indexer")
     indexing_time = time.time()
     config = Config()
 
