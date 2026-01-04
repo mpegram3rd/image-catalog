@@ -10,7 +10,7 @@ from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 from ai.client_provider import get_client
 from configuration.config import Config
 from images.image_handler import encode_image_async
-from repository.metadata_repository import list_contents
+from repository.metadata_repository import list_contents, add_analysis
 from models.models import AnalysisResult
 from ai.prompt_provider import PromptProvider
 from repository.multimodal_repository import add_multimodal
@@ -60,8 +60,8 @@ async def main() -> None:
             )
 
             results = map_response(response)
-            # print(results.model_dump_json(indent=2))
-            # add_analysis(str(p), results)
+
+            add_analysis(str(p), results)
             add_multimodal(str(p), results)
 
             end_time = time.time()  # Record end time
