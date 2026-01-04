@@ -11,7 +11,7 @@ async function uploadFile(file: File): Promise<ImageSearchResults> {
     const formData = new FormData();
     formData.append('file', file);
     try {
-        const result = await fetch("http://localhost:8000/api/uploadfile", {
+        const result = await fetch("http://localhost:8000/api/search/image", {
             method: 'POST',
             body: formData
         });
