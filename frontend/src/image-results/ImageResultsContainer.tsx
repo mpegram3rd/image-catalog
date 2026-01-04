@@ -26,10 +26,10 @@ const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
             {results.map((result: ImageMatchResult) => (
                     <Carousel.Slide>
                         <Image
-                            maw={"100%"}
-                            mah={"80%"}
+                            maw={"200px"}
+                            mah={"200px"}
                             radius='md'
-                            src={result.image_path}
+                            src={"data:image/jpeg;base64," + result.thumbnail}
                             alt={result.description}
                         />
                         <div>{result.description}</div>
