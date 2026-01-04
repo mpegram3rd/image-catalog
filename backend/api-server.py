@@ -3,7 +3,7 @@ from PIL import Image
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import SearchResult
+from models.models import SearchResult, TextSearchRequest
 from repository.multimodal_repository import find_by_image, SMALL_CUTOFF_THRESHOLD
 
 app = FastAPI()
@@ -22,12 +22,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/api/uploadfile")
-async def create_upload_file(file: UploadFile) -> list[SearchResult]:
+@app.post("/api/search/image")
+async def search_by_image(file: UploadFile) -> list[SearchResult]:
     img = Image.open(file.file)
 
     results = find_by_image(img, SMALL_CUTOFF_THRESHOLD)
     print(f"Search Image Details: {img.format}, Found: {results[0].image_path} w/ Similarity: {results[0].distance}\nDescription: {results[0].description}")
+
+    return results
+
+@app.post("/api/search/text")
+async def search_by_text(search: TextSearchRequest) -> list[SearchResult]:
+
+    results = find_by_text(search.searchText, SMALL_CUTOFF_THRESHOLD)
+    print(f"Search Text: {search.searchText}, Found: {results[0].image_path} w/ Similarity: {results[0].distance}\nDescription: {results[0].description}")
 
     return results
 

@@ -24,3 +24,5 @@ class SearchResult(BaseModel):
     distance: float
 
 
+class TextSearchRequest(BaseModel):
+    searchText: str
