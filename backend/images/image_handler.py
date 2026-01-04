@@ -1,10 +1,11 @@
 import base64
 import io
 import time
+from typing import Final
 
 import aiofiles
 from PIL import Image
-
+BASE64_PNG_PREFIX :Final = "data:image/png;base64,"
 
 async def encode_image_async(image_path: str) -> str:
     try:
@@ -43,7 +44,7 @@ async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: in
         # Convert to a JPEG with 80% quality in memory
         jpeg_buffer = io.BytesIO()
         thumbnail_image.save(jpeg_buffer, format="PNG", quality=80)
-        b64_thumbnail = base64.b64encode(jpeg_buffer.getvalue()).decode("utf-8")
+        b64_thumbnail = BASE64_PNG_PREFIX + base64.b64encode(jpeg_buffer.getvalue()).decode("utf-8")
 
         finish_time = time.time()
         execution_time = finish_time - thumbnail_time

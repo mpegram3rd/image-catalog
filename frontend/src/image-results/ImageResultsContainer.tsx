@@ -29,7 +29,7 @@ const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
                             maw={"200px"}
                             mah={"200px"}
                             radius='md'
-                            src={"data:image/jpeg;base64," + result.thumbnail}
+                            src={result.thumbnail}
                             alt={result.description}
                         />
                         <div>{result.description}</div>
