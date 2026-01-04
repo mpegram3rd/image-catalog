@@ -20,6 +20,28 @@ Create an example of how to take a Pillow `Image`, generate a thumbnail constrai
 **Discussion:** Provided a good example of the code necessary for doing this.  Also provided detailed explanation.  I was able to work with the example and adapt it to my purposes.
 
 ---
+**Intent:** I realized it was going to be better for me to work with the already `Base64` encoded image file I had in memory so I wanted to take that data and directly create a `PIL Image` file from it.
+
+**Model:** `google/gemma-3-12b`
+
+**Prompt:**
+```text
+How can I take a base64 encoded jpeg image and convert it into a PILLOW image?
+```
+**Discussion:** Once again the solution was satsifactory, in fact a bit more complete than I needed to so I extracted the useful bits and applied them to my situation.
+
+---
+**Intent:** After creating a grid of thumbnails I wanted to be able to open a `Mantine Modal` when I clicked on the `Mantine Image`  I also wanted to be able to pass in the URL of the image to be displayed in the modal.  I knew this needed to use props but wanted to see how the model responded.
+
+**Model:** `google/gemma-3-12b`
+
+**Prompt:**
+```text
+Create an example using Mantine of an Image that is clickable.  When clicked it will open a modal that will show the image that is defined in another component.  The modal component will be passed a URL so it will know which image to display.
+```
+**Discussion:** The model provided an appropriate solution.  It also provided a good explanation of the solution and followed up with `Key Improvements and Considerations`
+
+---
 **Intent:** Template
 
 **Model:** `google/gemma-3-12b`
