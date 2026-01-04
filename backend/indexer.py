@@ -72,7 +72,7 @@ async def main() -> None:
             add_multimodal(str(p), results, thumbnail)
 
             print(f"- Embedding and storing took {time.time() - timer:.4f} seconds")
-            print(f"- Total Processing Timeç: {time.time() - total_processing:.4f} seconds\n")
+            print(f"- Total Processing Time: {time.time() - total_processing:.4f} seconds\n")
     indexing_end = time.time()
     print(f"Indexing {processed_images} images took {indexing_end - indexing_time:.4f} seconds")
 
