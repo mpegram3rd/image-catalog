@@ -8,7 +8,10 @@ try yourself to see how the results look.  I'll try to capture the `prompt` whic
 results
 
 # Prompts
+**Intent:** I wanted to generate thumbnails and store them as base64 lower quality jpeg images in the vector DB's metadata. 
+
 **Model:** `google/gemma-3-12b`
+
 **Prompt:**
 ```text
 Create an example of how to take a Pillow `Image`, generate a thumbnail constrained to a fixed width and height but maintaining the proper aspect ratio and converting that thumbnail in its JPEG representation with 80% compression as base64 in Python
@@ -17,6 +20,8 @@ Create an example of how to take a Pillow `Image`, generate a thumbnail constrai
 **Discussion:** Provided a good example of the code necessary for doing this.  Also provided detailed explanation.  I was able to work with the example and adapt it to my purposes.
 
 ---
+**Intent:** Template
+
 **Model:** `google/gemma-3-12b`
 
 **Prompt:**
@@ -26,3 +31,6 @@ template
 **Discussion:** Template
 
 ---
+
+
+
