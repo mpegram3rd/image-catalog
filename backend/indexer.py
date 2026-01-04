@@ -40,8 +40,9 @@ async def main() -> None:
     for p in base_path.rglob("*"):
         if p.is_file() and (p.suffix in ['.jpg', '.png']):
             print(f"Processing {p}...")
+            total_processing = time.time()
             processed_images += 1
-            start_time = time.time()  # Record start time
+            timer = time.time()  # Record start time
 
             image_data = await encode_image_async(p)
 
@@ -60,22 +61,18 @@ async def main() -> None:
             )
 
             results = map_response(response)
-            end_time = time.time()  # Record end time
 
-            execution_time = end_time - start_time
-            print(f"- Model analysis took {execution_time:.4f} seconds")
+            print(f"- Model analysis took {time.time() - timer:.4f} seconds")
 
             thumbnail = await create_thumbnail_as_base64_async(image_data, config.thumbnail_width, config.thumbnail_height)
 
-            start_time = time.time()
+            timer = time.time()
 
             add_analysis(str(p), results, thumbnail)
             add_multimodal(str(p), results, thumbnail)
 
-            end_time = time.time()
-            execution_time = end_time - start_time
-            print(f"- Embedding and storing took {execution_time:.4f} seconds\n")
-
+            print(f"- Embedding and storing took {time.time() - timer:.4f} seconds")
+            print(f"- Total Processing Timeç: {time.time() - total_processing:.4f} seconds\n")
     indexing_end = time.time()
     print(f"Indexing {processed_images} images took {indexing_end - indexing_time:.4f} seconds")
 
