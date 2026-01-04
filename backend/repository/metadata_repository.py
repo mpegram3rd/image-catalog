@@ -57,9 +57,10 @@ def add_analysis(image_path: str, data: AnalysisResult):
     )
 
     # metadata_str = metadata.model_dump_json()
+    server_friendly_path = image_path[len(config.photos_base_path):]
 
     description_collection.add (
-        ids=[image_path],
+        ids=[server_friendly_path],
         documents=[data.description],
         metadatas=[metadata.model_dump()]
     )

@@ -35,10 +35,11 @@ async def main() -> None:
     prompt = await prompt_provider.get_prompt_async('image-analysis')
 
     base_path = Path(config.photos_base_path)
+    processed_images = 0
     for p in base_path.rglob("*"):
         if p.is_file() and (p.suffix in ['.jpg', '.png']):
-            server_friendly_path = str(p)[len(config.photos_base_path):]
-            print(f"Processing {server_friendly_path}...")
+            print(f"Processing {p}...")
+            processed_images += 1
             start_time = time.time()  # Record start time
 
             image_data = await encode_image_async(p)
@@ -59,15 +60,14 @@ async def main() -> None:
 
             results = map_response(response)
             # print(results.model_dump_json(indent=2))
-            # add_analysis(str(server_friendly_path), results)
-            add_multimodal(server_friendly_path, results)
+            # add_analysis(str(p), results)
+            add_multimodal(str(p), results)
 
             end_time = time.time()  # Record end time
 
             execution_time = end_time - start_time
-            print(f"Processing {server_friendly_path} took {execution_time:.4f} seconds")
+            print(f"Processing {p} took {execution_time:.4f} seconds")
     indexing_end = time.time()
-    print(f"Indexing took {indexing_end - indexing_time:.4f} seconds")
-    list_contents()
+    print(f"Indexing {processed_images} images took {indexing_end - indexing_time:.4f} seconds")
 
 asyncio.run(main())
