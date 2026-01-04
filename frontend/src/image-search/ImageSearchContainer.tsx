@@ -1,11 +1,14 @@
 import ImageMatchSearch from "./image-match/ImageMatchSearch.tsx";
 import {Box} from "@mantine/core";
+import type ImageSearchContainerProps from "./ImageSearchContainerProps.ts";
 
-export default function ImageSearchContainer () {
+const ImageSearchContainer: React.FC<ImageSearchContainerProps> = ({setSearchResults}: ImageSearchContainerProps) => {
 
     return (
         <Box pos="relative" maw={600} mx="auto" mt="xl">
-            <ImageMatchSearch/>
+            <ImageMatchSearch setSearchResults={setSearchResults}/>
         </Box>
     );
 }
+
+export default ImageSearchContainer;

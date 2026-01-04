@@ -3,8 +3,10 @@ import {Carousel} from "@mantine/carousel";
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import styles from './ImageResultsContainer.module.css'
+import type {ImageMatchResult, ImageSearchResults} from "../models/ImageSearchResults.ts";
+import * as React from "react";
 
-export default function ImageResultsContainer () {
+const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
     return (
         <Carousel
             height={200}
@@ -14,9 +16,15 @@ export default function ImageResultsContainer () {
                 align: 'center'
             }}
         >
-            <Carousel.Slide>1</Carousel.Slide>
-            <Carousel.Slide>2</Carousel.Slide>
-            <Carousel.Slide>3</Carousel.Slide>
+            {results.map((result: ImageMatchResult) => (
+                    <Carousel.Slide>
+                        <div><b>Image:</b> {result.image_path}</div>
+                        <div><b>Description:</b> {result.description}</div>
+                    </Carousel.Slide>
+                ))
+            }
         </Carousel>
     );
 }
+
+export default ImageResultsContainer;

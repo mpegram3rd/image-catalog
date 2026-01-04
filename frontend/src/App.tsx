@@ -4,15 +4,17 @@ import './App.css'
 import { MantineProvider } from "@mantine/core";
 import ImageSearchContainer from "./image-search/ImageSearchContainer.tsx";
 import ImageResultsContainer from "./image-results/ImageResultsContainer.tsx";
+import {useState} from "react";
+import type {ImageSearchResults} from "./models/ImageSearchResults.ts";
 
-function App() {
+export default function App() {
 
-  return (
-    <MantineProvider >
-        <ImageSearchContainer />
-        <ImageResultsContainer/>
-    </MantineProvider>
-  )
+    const [searchResults, setSearchResults] = useState<ImageSearchResults>({ results: [] });
+
+    return (
+        <MantineProvider >
+            <ImageSearchContainer setSearchResults={setSearchResults} />
+            <ImageResultsContainer results={searchResults.results} />
+        </MantineProvider>
+    )
 }
-
-export default App

@@ -1,12 +1,13 @@
 import {Dropzone, type FileRejection, MIME_TYPES} from '@mantine/dropzone';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import {Box, Group, rem, Text} from '@mantine/core';
-import type {ImageMatchResult} from "../../models/ImageMatchResult.ts";
+import type {ImageMatchResult, ImageSearchResults} from "../../models/ImageSearchResults.ts";
 import {useState} from "react";
 import TextSearch from "../text-match/TextSearch.tsx";
+import type ImageSearchContainerProps from "../ImageSearchContainerProps.ts";
 
 // TODO move this over into a service
-async function uploadFile(file: File): Promise<void> {
+async function uploadFile(file: File): Promise<ImageSearchResults> {
     const formData = new FormData();
     formData.append('file', file);
     try {
@@ -14,21 +15,30 @@ async function uploadFile(file: File): Promise<void> {
             method: 'POST',
             body: formData
         });
-        const data = (await result.json()) as ImageMatchResult;
-        console.log('Result: ', data)
+        const data = (await result.json()) as ImageMatchResult[];
+
+        return {
+            results: data
+        } as ImageSearchResults;
     }
     catch (error) {
         console.error(error);
     }
+    return {
+        results: []
+    } as ImageSearchResults;
 }
 
-export default function ImageMatchSearch() {
+const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults}: ImageSearchContainerProps) => {
     const [isHovering, setIsHovering] = useState(false);
 
     const handleFileDrop = async (files: File[]) => {
         setIsHovering(false);
         console.log('Dropzone dropped file: ', files[0].name);
         await uploadFile(files[0])
+            .then((searchResults   ) => {
+                setSearchResults(searchResults);
+            });
         console.log('File upload completed');
     }
 
@@ -100,3 +110,5 @@ export default function ImageMatchSearch() {
             </Dropzone>
     );
 }
+
+export default ImageMatchSearch;

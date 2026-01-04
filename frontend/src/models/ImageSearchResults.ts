@@ -3,3 +3,6 @@ export interface ImageMatchResult {
     description: string;
 }
 
+export interface ImageSearchResults {
+    results: ImageMatchResult[];
+}
