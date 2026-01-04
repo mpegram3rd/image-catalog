@@ -4,7 +4,7 @@ from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import SearchResult, TextSearchRequest
-from repository.multimodal_repository import find_by_image, SMALL_CUTOFF_THRESHOLD
+from repository.multimodal_repository import find_by_image, SMALL_CUTOFF_THRESHOLD, find_by_text
 
 app = FastAPI()
 
