@@ -180,3 +180,6 @@ pyrightconfig.json
 # ChromaDB
 *.bin
 *.sqlite3
+
+# Data files
+photos/

@@ -1,13 +1,17 @@
 [project]
 name = "image-catalog"
 version = "0.1.0"
-description = "An searchable catalog of your images"
+description = "A searchable catalog of your images"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aiofiles>=25.1.0",
-    "chromadb>=1.3.6",
-    "fastapi>=0.121.2",
+    "chromadb>=1.4.0",
+    "fastapi[standard]>=0.128.0",
     "openai>=2.8.1",
-    "pydantic-settings>=2.12.0"
+    "pydantic-settings>=2.12.0",
+    "pillow>=12.1.0",
+    "open-clip-torch>=3.2.0",
+    "python-multipart>=0.0.21",
+    "numpy>=2.4.0",
 ]

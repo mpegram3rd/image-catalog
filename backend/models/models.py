@@ -12,10 +12,19 @@ class ColorData(BaseModel):
 class Metadata(BaseModel):
     tags: str
     colors: str
+    thumbnail: str
 
 class AnalysisResult(BaseModel):
     tags: List[TagData]
     colors: List[ColorData]
     description: str
 
+class SearchResult(BaseModel):
+    image_path: str
+    description: str
+    thumbnail: str
+    distance: float
 
+
+class TextSearchRequest(BaseModel):
+    searchText: str
