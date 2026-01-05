@@ -10,7 +10,7 @@ from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 from ai.client_provider import get_client
 from configuration.config import Config
 from images.image_handler import encode_image_async, create_thumbnail_as_base64_async
-from repository.metadata_repository import list_contents, add_analysis
+from repository.metadata_repository import add_analysis
 from models.models import AnalysisResult
 from ai.prompt_provider import PromptProvider
 from repository.multimodal_repository import add_multimodal
