@@ -4,7 +4,7 @@ from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import SearchResult, TextSearchRequest
-from repository.filtering_thresholds import SMALL_CUTOFF_THRESHOLD, MEDIUM_CUTOFF_THRESHOLD
+from repository.filtering_thresholds import SMALL_CUTOFF_THRESHOLD, MEDIUM_CUTOFF_THRESHOLD, VALID_THRESHOLDS
 from repository.metadata_repository import find_by_text
 from repository.multimodal_repository import find_by_image, find_by_text_mm
 
@@ -50,9 +50,9 @@ async def search_by_text(search: TextSearchRequest) -> list[SearchResult]:
     :return: A list of search results that are most similar to the image provided.  The search results contain image_path, description and thumbnail
     """
     if search.multimodal:
-        results = find_by_text_mm(search.searchText, SMALL_CUTOFF_THRESHOLD)
+        results = find_by_text_mm(search.searchText, VALID_THRESHOLDS[search.threshold])
     else:
-        results = find_by_text(search.searchText, MEDIUM_CUTOFF_THRESHOLD)
+        results = find_by_text(search.searchText, VALID_THRESHOLDS[search.threshold])
 
     return results
 

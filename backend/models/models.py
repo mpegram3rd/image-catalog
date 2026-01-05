@@ -1,4 +1,4 @@
-from typing import List, Annotated
+from typing import List, Annotated, Literal
 from pydantic import BaseModel, Field
 
 
@@ -36,3 +36,4 @@ class TextSearchRequest(BaseModel):
     """
     searchText: Annotated[str, Field(description="Text to used when searching images")]
     multimodal: Annotated[bool, Field(description="Determines if the search should be performed using the multimodal dataset. Default is to search on description")] = False
+    threshold: Annotated[Literal["small", "medium", "yuge"], Field(description="Determines the threshold distance between the first result and subsequent results to use for filtering. Default is `small`")] = "small"
