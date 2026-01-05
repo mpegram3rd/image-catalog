@@ -35,4 +35,4 @@ class TextSearchRequest(BaseModel):
     Text Search Request criteria
     """
     searchText: Annotated[str, Field(description="Text to used when searching images")]
-    repository: Annotated[str, Field(description="Which repo to use for searching. Valid values are 'description' and 'multimodal'")] = "description"
+    multimodal: Annotated[bool, Field(description="Determines if the search should be performed using the multimodal dataset. Default is to search on description")] = False

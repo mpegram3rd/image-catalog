@@ -49,11 +49,10 @@ async def search_by_text(search: TextSearchRequest) -> list[SearchResult]:
     :param search: The search criteria and an indication of which repository to perform the search
     :return: A list of search results that are most similar to the image provided.  The search results contain image_path, description and thumbnail
     """
-    if search.repository == "description":
-        results = find_by_text(search.searchText, MEDIUM_CUTOFF_THRESHOLD)
-    else:
+    if search.multimodal:
         results = find_by_text_mm(search.searchText, SMALL_CUTOFF_THRESHOLD)
-    print(f"Search Text: {search.searchText}, Found: {results[0].image_path} w/ Similarity: {results[0].distance}\nDescription: {results[0].description}")
+    else:
+        results = find_by_text(search.searchText, MEDIUM_CUTOFF_THRESHOLD)
 
     return results
 

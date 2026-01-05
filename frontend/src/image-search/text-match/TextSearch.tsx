@@ -7,7 +7,7 @@ import type {ImageMatchResult} from "../../models/ImageSearchResults.ts";
 import {useState} from "react";
 
 const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setLoading}: ImageSearchContainerProps) => {
-    const [searchRepo, setSearchRepo] = useState<string>("description");
+    const [isMultimodal, setMultimodal] = useState(false)
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -29,7 +29,7 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
                 },
                 body: JSON.stringify({
                     searchText: formValues.searchText,
-                    repository: searchRepo
+                    multimodal: isMultimodal
                 })
             });
             const data = (await result.json()) as ImageMatchResult[];
@@ -56,7 +56,7 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
             <Switch
                 label="Multimodal Text Search"
                 withThumbIndicator={false}
-                onChange={(event) => setSearchRepo(event.currentTarget.checked ? 'multimodal': 'description')}
+                onChange={(event) => setMultimodal(event.currentTarget.checked)}
             />
         </form>
     )
