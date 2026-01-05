@@ -13,6 +13,7 @@ def transform(results: QueryResult, cutoff_threshold: float) -> list[SearchResul
     ids = results['ids'][0]
     metadata = results['metadatas'][0]
     distances = results['distances'][0]
+    documents = results['documents'][0]
 
     # The closest distance to our search item.  We're going to use this distance
     # to calculate a threshold by which search results are "too far away" to be worth consideration.
@@ -35,10 +36,15 @@ def transform(results: QueryResult, cutoff_threshold: float) -> list[SearchResul
         if relative_distance >= cutoff_threshold:
             break
 
+        if 'description' in metadata[index]:
+            description = metadata[index]['description']
+        else:
+            description = documents[index]
+
         search_results.append(
             SearchResult(
                 image_path=ids[index],
-                description=metadata[index]['description'],
+                description=description,
                 thumbnail=metadata[index]['thumbnail'],
                 distance = distances[index]
             )
