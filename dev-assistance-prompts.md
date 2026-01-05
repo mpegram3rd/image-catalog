@@ -31,15 +31,15 @@ How can I take a base64 encoded jpeg image and convert it into a PILLOW image?
 **Discussion:** Once again the solution was satsifactory, in fact a bit more complete than I needed to so I extracted the useful bits and applied them to my situation.
 
 ---
-**Intent:** After creating a grid of thumbnails I wanted to be able to open a `Mantine Modal` when I clicked on the `Mantine Image`  I also wanted to be able to pass in the URL of the image to be displayed in the modal.  I knew this needed to use props but wanted to see how the model responded.
+**Intent:** After creating a grid of thumbnails I wanted to be able to open a `Mantine Modal` when I clicked on the `Mantine Image`  I also wanted to be able to pass in the URL of the image to be displayed in the modal.  I knew this needed to use props but wanted to see how the model responded. 
 
 **Model:** `google/gemma-3-12b`
 
 **Prompt:**
 ```text
-Create an example using Mantine of an Image that is clickable.  When clicked it will open a modal that will show the image that is defined in another component.  The modal component will be passed a URL so it will know which image to display.
+Create an example with 2 distinct components managed in 2 distinct files using `Mantine` written in `Typescript` where one component has a collection of `Image` components representing thumbnails.  When the thumbnail is clicked on it passes a URL and some alt-text into another component which displays a `Modal` that contains an `Image` showing the full size image retrieved by the URL provided and the alt-text passed in is applied to the image.  Manage both components in distinct .tsx files.
 ```
-**Discussion:** The model provided an appropriate solution.  It also provided a good explanation of the solution and followed up with `Key Improvements and Considerations`
+**Discussion:** My initial prompt left out the need for it to be `Typescript` and the fact I wanted it managed in 2 distinct components in 2 distinct files so it kind of glommed the two of them together.  I didn't like that solution so I used the refined prompt above. The improved prompt created a much better solution.  It also provided a summary set of recommended `Key Improvements and Considerations`
 
 ---
 **Intent:** Template
