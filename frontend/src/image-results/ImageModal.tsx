@@ -11,7 +11,7 @@ const ImageModal: React.FC<ImageDisplayProps> = ({isOpen, imagePath, description
             onClose={onClose}
             withCloseButton={false}
             centered
-            size="md"
+            size="lg"
             styles={{
                 header: { background: '#ddd' },
                 content: { background: '#ddd' }
@@ -22,7 +22,7 @@ const ImageModal: React.FC<ImageDisplayProps> = ({isOpen, imagePath, description
                 alt={description || "No description available"}
                 radius="md"
                 styles={{
-                    root: { boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.3)' }
+                    root: { boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.6)' }
                 }}
             />
             <ScrollArea
