@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import SearchResult, TextSearchRequest
 from repository.filtering_thresholds import SMALL_CUTOFF_THRESHOLD, MEDIUM_CUTOFF_THRESHOLD
-from repository.multimodal_repository import find_by_image, find_by_text
+from repository.metadata_repository import find_by_text
+from repository.multimodal_repository import find_by_image
 
 app = FastAPI()
 
