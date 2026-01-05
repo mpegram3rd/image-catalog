@@ -76,7 +76,7 @@ const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults
             {isHovering ? (
                 <Box
                     style={{
-                        height: rem(120),
+                        height: rem(100),
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -99,7 +99,7 @@ const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults
                         </Dropzone.Idle>
 
                         <div>
-                            <Text size="xl" inline>
+                            <Text size="lg" inline>
                                 Drop Images here to search
                             </Text>
                             <Text size="sm" c="dimmed" inline mt={7}>

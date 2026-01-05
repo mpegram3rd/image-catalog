@@ -1,4 +1,4 @@
-import {Switch, TextInput} from "@mantine/core";
+import {Group, SegmentedControl, Switch, Text, TextInput} from "@mantine/core";
 import {isNotEmpty, useForm} from "@mantine/form";
 import type {TextSearchRequest} from "../../models/TextSearchRequest.ts";
 import styles from "./TextSearch.module.css";
@@ -8,6 +8,7 @@ import {useState} from "react";
 
 const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setLoading}: ImageSearchContainerProps) => {
     const [isMultimodal, setMultimodal] = useState(false)
+    const [threshold, setThreshold] = useState("small")
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -29,7 +30,8 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
                 },
                 body: JSON.stringify({
                     searchText: formValues.searchText,
-                    multimodal: isMultimodal
+                    multimodal: isMultimodal,
+                    threshold: threshold
                 })
             });
             const data = (await result.json()) as ImageMatchResult[];
@@ -53,11 +55,27 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
                 key={form.key('searchText')}
                 {...form.getInputProps('searchText')}
             />
-            <Switch
-                label="Multimodal Text Search"
-                withThumbIndicator={false}
-                onChange={(event) => setMultimodal(event.currentTarget.checked)}
-            />
+            <Group styles={
+                {
+                    root: { paddingTop: '5px' }
+                }}>
+                <Text size={"sm"}><b>Distance Threshold:</b></Text>
+                <SegmentedControl
+                    color={"blue"}
+                    value={threshold}
+                    onChange={setThreshold}
+                    data={[
+                        { label: 'Small', value: 'small' },
+                        { label: 'Medium', value: 'medium' },
+                        { label: 'Large', value: 'yuge' }
+                    ]}
+                />
+                <Switch
+                    label="Multimodal Text Search"
+                    withThumbIndicator={false}
+                    onChange={(event) => setMultimodal(event.currentTarget.checked)}
+                />
+            </Group>
         </form>
     )
 }
