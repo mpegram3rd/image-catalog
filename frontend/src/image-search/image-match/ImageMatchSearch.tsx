@@ -1,5 +1,5 @@
 import {Dropzone, type FileRejection, MIME_TYPES} from '@mantine/dropzone';
-import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
+import {IconPhoto, IconUpload, IconX} from '@tabler/icons-react';
 import {Box, Group, rem, Text} from '@mantine/core';
 import type {ImageMatchResult, ImageSearchResults} from "../../models/ImageSearchResults.ts";
 import {useState} from "react";
@@ -52,66 +52,67 @@ const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults
     }
 
     return (
-            <Dropzone
-                accept={[
-                    MIME_TYPES.png,
-                    MIME_TYPES.jpeg
-                ]}
-                maxSize={10 * 1024 ** 2}
-                onDrop={handleFileDrop}
-                onReject={handleRejectedFile}
-                // We deactivate clicking so the Textarea remains interactive
-                activateOnClick={false}
-                onDragEnter={() => setIsHovering(true)}
-                onDragLeave={() => setIsHovering(false)}
-                styles={{
-                    root: {
-                        border: isHovering ? undefined : 'none',
-                        padding: 0,
-                        backgroundColor: 'transparent',
-                        transition: 'all 0.2s ease',
-                    },
-                }}
-            >
-                {isHovering ? (
-                    <Box
-                        style={{
-                            height: rem(120),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            border: `${rem(2)} dashed var(--mantine-color-blue-6)`,
-                            borderRadius: 'var(--mantine-radius-md)',
-                            backgroundColor: 'var(--mantine-color-blue-light)',
-                            pointerEvents: 'none',
-                        }}
-                        miw={600}
-                    >
-                        <Group justify="center" gap="xl" style={{ pointerEvents: 'none' }}>
-                            <Dropzone.Accept>
-                                <IconUpload size="3.2rem" stroke={1.5} />
-                            </Dropzone.Accept>
-                            <Dropzone.Reject>
-                                <IconX size="3.2rem" stroke={1.5} />
-                            </Dropzone.Reject>
-                            <Dropzone.Idle>
-                                <IconPhoto size="3.2rem" stroke={1.5} />
-                            </Dropzone.Idle>
+        <Dropzone
+            accept={[
+                MIME_TYPES.png,
+                MIME_TYPES.jpeg
+            ]}
+            maxSize={10 * 1024 ** 2}
+            onDrop={handleFileDrop}
+            onReject={handleRejectedFile}
+            // We deactivate clicking so the Textarea remains interactive
+            activateOnClick={false}
+            onDragEnter={() => setIsHovering(true)}
+            onDragLeave={() => setIsHovering(false)}
+            styles={{
+                root: {
+                    border: isHovering ? undefined : 'none',
+                    padding: 0,
+                    backgroundColor: 'transparent',
+                    transition: 'all 0.2s ease',
+                },
+            }}
+        >
+            {isHovering ? (
+                <Box
+                    style={{
+                        height: rem(100),
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: `${rem(2)} dashed var(--mantine-color-blue-6)`,
+                        borderRadius: 'var(--mantine-radius-md)',
+                        backgroundColor: 'var(--mantine-color-blue-light)',
+                        pointerEvents: 'none',
+                    }}
+                    miw={600}
+                >
+                    <Group justify="center" gap="xl" style={{ pointerEvents: 'none' }}>
+                        <Dropzone.Accept>
+                            <IconUpload size="3.2rem" stroke={1.5} />
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+                            <IconX size="3.2rem" stroke={1.5} />
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                            <IconPhoto size="3.2rem" stroke={1.5} />
+                        </Dropzone.Idle>
 
-                            <div>
-                                <Text size="xl" inline>
-                                    Drop Images here to search
-                                </Text>
-                                <Text size="sm" c="dimmed" inline mt={7}>
-                                    Release to attach to your message
-                                </Text>
-                            </div>
-                        </Group>
-                    </Box>
-                ) : (
-                    <TextSearch setSearchResults={setSearchResults} setLoading={setLoading}/>
-                )}
-            </Dropzone>
+                        <div>
+                            <Text size="lg" inline>
+                                Drop Images here to search
+                            </Text>
+                            <Text size="sm" c="dimmed" inline mt={7}>
+                                Release to attach to your message
+                            </Text>
+                        </div>
+                    </Group>
+                </Box>
+            ) : (
+                <TextSearch setSearchResults={setSearchResults} setLoading={setLoading}/>
+            )}
+        </Dropzone>
+
     );
 }
 

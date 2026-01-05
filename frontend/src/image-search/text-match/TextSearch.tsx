@@ -1,11 +1,15 @@
-import {rem, TextInput} from "@mantine/core";
+import {Group, SegmentedControl, Switch, Text, TextInput} from "@mantine/core";
 import {isNotEmpty, useForm} from "@mantine/form";
 import type {TextSearchRequest} from "../../models/TextSearchRequest.ts";
 import styles from "./TextSearch.module.css";
 import type ImageSearchContainerProps from "../ImageSearchContainerProps.ts";
 import type {ImageMatchResult} from "../../models/ImageSearchResults.ts";
+import {useState} from "react";
 
 const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setLoading}: ImageSearchContainerProps) => {
+    const [isMultimodal, setMultimodal] = useState(false)
+    const [threshold, setThreshold] = useState("small")
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -24,7 +28,11 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
                 headers: {
                     'Content-Type': 'application/json', // Important: Set the content type to JSON
                 },
-                body: JSON.stringify(formValues)
+                body: JSON.stringify({
+                    searchText: formValues.searchText,
+                    multimodal: isMultimodal,
+                    threshold: threshold
+                })
             });
             const data = (await result.json()) as ImageMatchResult[];
             setSearchResults({
@@ -44,11 +52,30 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
                 label="Search Text"
                 placeholder="Describe the image you want to find..."
                 classNames={{ wrapper: styles.searchField} }
-                miw={600}
-                mih={rem(120)}
                 key={form.key('searchText')}
                 {...form.getInputProps('searchText')}
             />
+            <Group styles={
+                {
+                    root: { paddingTop: '5px' }
+                }}>
+                <Text size={"sm"}><b>Distance Threshold:</b></Text>
+                <SegmentedControl
+                    color={"blue"}
+                    value={threshold}
+                    onChange={setThreshold}
+                    data={[
+                        { label: 'Small', value: 'small' },
+                        { label: 'Medium', value: 'medium' },
+                        { label: 'Large', value: 'yuge' }
+                    ]}
+                />
+                <Switch
+                    label="Multimodal Text Search"
+                    withThumbIndicator={false}
+                    onChange={(event) => setMultimodal(event.currentTarget.checked)}
+                />
+            </Group>
         </form>
     )
 }

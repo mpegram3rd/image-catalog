@@ -42,6 +42,11 @@ const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
                                 onClick={() => {
                                     handleOpenModal(result.image_path, result.description);
                                 }}
+                                styles={{
+                                    root: {
+                                        boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.4)'
+                                    }
+                                }}
                             />
                         </div>
                     ))
