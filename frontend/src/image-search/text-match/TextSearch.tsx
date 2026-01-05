@@ -5,7 +5,7 @@ import styles from "./TextSearch.module.css";
 import type ImageSearchContainerProps from "../ImageSearchContainerProps.ts";
 import type {ImageMatchResult} from "../../models/ImageSearchResults.ts";
 
-const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults}: ImageSearchContainerProps) => {
+const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setLoading}: ImageSearchContainerProps) => {
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -17,6 +17,7 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults}: Ima
     });
 
     const handleSubmit = async (formValues: TextSearchRequest) => {
+        setLoading(true);
         try {
             const result = await fetch("http://localhost:8000/api/search/text", {
                 method: 'POST',
@@ -34,6 +35,7 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults}: Ima
             console.error(error);
         }
         form.reset();
+        setLoading(false);
     };
 
     return (

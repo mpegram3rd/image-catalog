@@ -39,7 +39,6 @@ const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
                                 alt={result.description}
                                 onClick={() => {
                                     handleOpenModal(result.image_path, result.description);
-
                                 }}
                             />
                         </div>

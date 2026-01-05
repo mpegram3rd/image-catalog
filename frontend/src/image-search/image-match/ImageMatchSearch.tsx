@@ -29,18 +29,21 @@ async function uploadFile(file: File): Promise<ImageSearchResults> {
     } as ImageSearchResults;
 }
 
-const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults}: ImageSearchContainerProps) => {
+const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setLoading}: ImageSearchContainerProps) => {
     const [isHovering, setIsHovering] = useState(false);
 
     const handleFileDrop = async (files: File[]) => {
+        setLoading(true);
         setIsHovering(false);
         console.log('Dropzone dropped file: ', files[0].name);
         await uploadFile(files[0])
             .then((searchResults   ) => {
                 setSearchResults(searchResults);
-                console.log(`Search Results: ${JSON.stringify(searchResults)}`);
+            })
+            .catch((error) => {
+                console.error(error);
             });
-        console.log('File upload completed');
+        setLoading(false);
     }
 
     const handleRejectedFile = (fileRejections: FileRejection[]) => {
@@ -106,7 +109,7 @@ const ImageMatchSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults
                         </Group>
                     </Box>
                 ) : (
-                    <TextSearch setSearchResults={setSearchResults}/>
+                    <TextSearch setSearchResults={setSearchResults} setLoading={setLoading}/>
                 )}
             </Dropzone>
     );
