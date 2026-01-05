@@ -28,3 +28,4 @@ class SearchResult(BaseModel):
 
 class TextSearchRequest(BaseModel):
     searchText: str
+    repository: str = "description"
