@@ -30,7 +30,8 @@ const ImageModal: React.FC<ImageDisplayProps> = ({isOpen, imagePath, description
                 h={150}
                 offsetScrollbars
                 styles={{
-                    root: { marginTop: '10px' }
+                    root: { marginTop: '10px' },
+                    scrollbar: { background: 'inherit'}
                 }}
             >
                 <Text>{description || "No description available"}</Text>
