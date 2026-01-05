@@ -61,7 +61,7 @@ def find_by_image(image_data: Image.Image, cutoff_threshold: float) -> list[Sear
 
     return search_results
 
-def find_by_text(search_text: str, cutoff_threshold: float) -> list[SearchResult]:
+def find_by_text_mm(search_text: str, cutoff_threshold: float) -> list[SearchResult]:
     results = multimodal_collection.query(
         query_texts=[search_text]
     )
