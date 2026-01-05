@@ -48,7 +48,7 @@ def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
     )
 
     # metadata_str = metadata.model_dump_json()
-    server_friendly_path = config.photos_base_path + image_path[len(config.photos_base_path):]
+    server_friendly_path = config.photos_url_base + image_path[len(config.photos_base_path):]
 
     timer = time.time()
     description_collection.add (
