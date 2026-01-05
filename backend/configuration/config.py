@@ -9,6 +9,7 @@ class Config(BaseSettings):
     llm_api_key: str
     hf_token: str
     photos_base_path: str
+    photos_url_base: str
     db_base_path: str
     thumbnail_width: int
     thumbnail_height: int

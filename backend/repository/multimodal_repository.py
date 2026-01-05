@@ -41,7 +41,7 @@ multimodal_collection =  dbclient.get_or_create_collection(
 print()
 
 def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str):
-    server_friendly_path = image_path[len(config.photos_base_path):]
+    server_friendly_path = config.photos_base_path + image_path[len(config.photos_base_path):]
 
     timer = time.time()
     multimodal_collection.add(
