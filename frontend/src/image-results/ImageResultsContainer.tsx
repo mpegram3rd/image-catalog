@@ -26,7 +26,9 @@ const ImageResultsContainer: React.FC<ImageSearchResults> = ({ results }) => {
 
     return (
         <>
-            <SimpleGrid cols={4} >
+            <SimpleGrid cols={4} styles={
+                { root: { paddingTop: '10px' }}
+            }>
                 { results.map((result: ImageMatchResult) => (
                         <div key={result.image_path}>
                             <Image
