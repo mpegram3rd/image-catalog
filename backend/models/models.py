@@ -1,5 +1,6 @@
-from typing import List
-from pydantic import BaseModel
+from typing import List, Annotated
+from pydantic import BaseModel, Field
+
 
 class TagData(BaseModel):
     tag: str
@@ -20,12 +21,18 @@ class AnalysisResult(BaseModel):
     description: str
 
 class SearchResult(BaseModel):
-    image_path: str
-    description: str
-    thumbnail: str
-    distance: float
+    """
+    This represents the results of an image lookup regardless of whether it was done by image matching or text based search
+    """
+    image_path: Annotated[str, Field(description="The relative path to the full resolution image that can be used in a URL")]
+    description: Annotated[str, Field(description="A detailed description of the image that can be used to describe it to someone visually impaired")]
+    thumbnail: Annotated[str, Field(description="A Base64 encoded thumbnail version of the image in PNG format")]
+    distance: Annotated[float, Field(description="The calculated distance in vector space between the search criteria and the result. The closer to 0.0 the better the result is.")]
 
 
 class TextSearchRequest(BaseModel):
-    searchText: str
-    repository: str = "description"
+    """
+    Text Search Request criteria
+    """
+    searchText: Annotated[str, Field(description="Text to used when searching images")]
+    repository: Annotated[str, Field(description="Which repo to use for searching. Valid values are 'description' and 'multimodal'")] = "description"

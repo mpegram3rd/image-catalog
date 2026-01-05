@@ -26,6 +26,13 @@ app.add_middleware(
 
 @app.post("/api/search/image")
 async def search_by_image(file: UploadFile) -> list[SearchResult]:
+    """
+    Searches for images that are similar to the binary one provided in the 'file' input parameter.
+    This utilizes the multimodal repository which has an index of all the available images to search for.
+
+    :param file: a PNG or JPEG image file which will be converted to an embedding and used to search for similar images.
+    :return: A list of search results that are most similar to the image provided.  The search results contain image_path, description and thumbnail
+    """
     img = Image.open(file.file)
 
     results = find_by_image(img, MEDIUM_CUTOFF_THRESHOLD)
@@ -35,7 +42,13 @@ async def search_by_image(file: UploadFile) -> list[SearchResult]:
 
 @app.post("/api/search/text")
 async def search_by_text(search: TextSearchRequest) -> list[SearchResult]:
-
+    """
+    Searches for images that match the provided 'searchText' in the 'search' input parameter. This endpoint can
+    use either the `description` repository which is using text based embeddings to find a match, or it can search
+    against the `multimodal` repository which searches the multimodal space generated from the binary image on embedding.
+    :param search: The search criteria and an indication of which repository to perform the search
+    :return: A list of search results that are most similar to the image provided.  The search results contain image_path, description and thumbnail
+    """
     if search.repository == "description":
         results = find_by_text(search.searchText, MEDIUM_CUTOFF_THRESHOLD)
     else:
