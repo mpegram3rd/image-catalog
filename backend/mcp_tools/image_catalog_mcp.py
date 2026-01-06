@@ -39,11 +39,11 @@ async def find_by_text_mcp(search_query: str) -> list[SearchResultsMcp]:
 )
 async def find_displayable_image_mcp(search_query: str) -> Image:
     """
-    Searches for images that match the text described in the search query input parameter
+    Searches for an image which matches the text described in the search query input parameter.
 
     :param search_query:  The text to search for
 
-    :return: a list of search results that are most similar to the search request
+    :return: A single image of the top matching result in a format that can be displayed in the AI
     """
     text_search = TextSearchRequest(
         searchText=search_query,
