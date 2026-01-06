@@ -6,7 +6,8 @@ from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
 
 from configuration.config import Config
-from models.api_models import AnalysisResult, Metadata, SearchResult
+from models.api_models import SearchResult
+from models.indexing_models import AnalysisResult, Metadata
 from repository.search_transformer import transform
 
 print("Initializing Metadata Repository")
@@ -47,7 +48,6 @@ def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
         thumbnail=thumbnail
     )
 
-    # metadata_str = metadata.model_dump_json()
     server_friendly_path = config.photos_url_base + image_path[len(config.photos_base_path):]
 
     timer = time.time()
