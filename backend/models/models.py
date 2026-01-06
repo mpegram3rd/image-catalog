@@ -1,4 +1,7 @@
 from typing import List, Annotated, Literal
+
+from fastmcp.utilities.types import Image
+from mcp.types import ImageContent
 from pydantic import BaseModel, Field
 
 
@@ -37,3 +40,11 @@ class TextSearchRequest(BaseModel):
     searchText: Annotated[str, Field(description="Text to used when searching images")]
     multimodal: Annotated[bool, Field(description="Determines if the search should be performed using the multimodal dataset. Default is to search on description")] = False
     threshold: Annotated[Literal["small", "medium", "yuge"], Field(description="Determines the threshold distance between the first result and subsequent results to use for filtering. Default is `small`")] = "small"
+
+class SearchResultsMcp(BaseModel):
+    """
+    This represents the results of an image lookup regardless of whether it was done by image matching or text based search
+    """
+    image_path: Annotated[str, Field(description="The full URL to view the image that was found")]
+    description: Annotated[str, Field(description="A detailed description of the image that can be used to describe it to someone visually impaired")]
+
