@@ -2,6 +2,7 @@ import base64
 
 from fastmcp import FastMCP
 from fastmcp.utilities.types import Image
+from sympy import true
 
 from api_routes.image_catalog_router import search_by_text
 from models.api_models import SearchResultsMcp, TextSearchRequest
@@ -19,7 +20,8 @@ async def find_by_text_mcp(search_query: str) -> list[SearchResultsMcp]:
     """
     text_search = TextSearchRequest(
         searchText=search_query,
-        threshold="yuge"
+        threshold="yuge",
+        multimodal=False
     )
     search_result = await search_by_text(text_search)
     mcp_results = list[SearchResultsMcp]()
@@ -45,11 +47,12 @@ async def find_displayable_images_mcp(search_query: str) -> list[Image]:
 
     :param search_query:  The text to search for
 
-    :return: A single image of the top matching result in a format that can be displayed in the AI
+    :return: 1 or more images of the top matching results in a format that can be displayed in the AI
     """
     text_search = TextSearchRequest(
         searchText=search_query,
-        threshold="medium"
+        threshold="small",
+        multimodal = False
     )
 
     search_result = await search_by_text(text_search)
