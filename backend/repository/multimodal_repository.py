@@ -1,7 +1,7 @@
 import time
-from typing import Final
 
 import chromadb
+import numpy as np
 from PIL import Image
 from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
@@ -9,9 +9,8 @@ from chromadb.utils.data_loaders import ImageLoader
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
 
 from configuration.config import Config
-from models.models import AnalysisResult, SearchResult
-import numpy as np
-
+from models.api_models import SearchResult
+from models.indexing_models import AnalysisResult
 from repository.search_transformer import transform
 
 print("Initializing Multimodal Repository")

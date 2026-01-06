@@ -1,6 +1,6 @@
 from chromadb import QueryResult
 
-from models.models import SearchResult
+from models.api_models import SearchResult
 
 
 def transform(results: QueryResult, cutoff_threshold: float) -> list[SearchResult]:
