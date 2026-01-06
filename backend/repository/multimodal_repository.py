@@ -9,7 +9,7 @@ from chromadb.utils.data_loaders import ImageLoader
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
 
 from configuration.config import Config
-from models.models import AnalysisResult, SearchResult
+from models.api_models import AnalysisResult, SearchResult
 import numpy as np
 
 from repository.search_transformer import transform

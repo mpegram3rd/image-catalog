@@ -1,27 +1,7 @@
-from typing import List, Annotated, Literal
+from typing import Annotated, Literal
 
-from fastmcp.utilities.types import Image
-from mcp.types import ImageContent
 from pydantic import BaseModel, Field
 
-
-class TagData(BaseModel):
-    tag: str
-    confidence: float
-
-class ColorData(BaseModel):
-    color: str
-    frequency: float
-
-class Metadata(BaseModel):
-    tags: str
-    colors: str
-    thumbnail: str
-
-class AnalysisResult(BaseModel):
-    tags: List[TagData]
-    colors: List[ColorData]
-    description: str
 
 class SearchResult(BaseModel):
     """

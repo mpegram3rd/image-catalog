@@ -6,7 +6,7 @@ from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
 
 from configuration.config import Config
-from models.models import AnalysisResult, Metadata, SearchResult
+from models.api_models import AnalysisResult, Metadata, SearchResult
 from repository.search_transformer import transform
 
 print("Initializing Metadata Repository")
