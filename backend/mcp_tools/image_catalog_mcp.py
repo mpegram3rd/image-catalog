@@ -26,7 +26,7 @@ async def find_by_text_mcp(search_query: str) -> list[SearchResultsMcp]:
 
     for result in search_result:
         mcp_results.append(SearchResultsMcp(
-            image_path="http://localhost:5173/" + result.image_path,
+            image_path=f"http://localhost:5173/{result.image_path}",
             description=result.description
         ))
 
@@ -35,9 +35,11 @@ async def find_by_text_mcp(search_query: str) -> list[SearchResultsMcp]:
 
 @image_catalog_mcp.tool(
     name="find_displayable_image",
-    description="Searches for an image using a text search query and returns the closest image it can find in the image catalog to what was requested so the image can be displayed in the AI"
+    description="Searches for images using a text search query and returns the closest images it can find in the image "
+                "catalog to what was requested so the image can be displayed in the AI. "
+                "This function should be called to retrieve a displayable version of images from the catalog."
 )
-async def find_displayable_image_mcp(search_query: str) -> Image:
+async def find_displayable_images_mcp(search_query: str) -> list[Image]:
     """
     Searches for an image which matches the text described in the search query input parameter.
 
@@ -47,11 +49,16 @@ async def find_displayable_image_mcp(search_query: str) -> Image:
     """
     text_search = TextSearchRequest(
         searchText=search_query,
-        threshold="small"
+        threshold="medium"
     )
-    search_result = await search_by_text(text_search)
-    image_data= base64.b64decode(search_result[0].thumbnail[len("data:image/png;base64,"):])
 
-    return Image(data=image_data, format="png")
+    search_result = await search_by_text(text_search)
+
+    results = list[Image]()
+    for result in search_result:
+        image_data = base64.b64decode(result.thumbnail[len("data:image/png;base64,"):])
+        results.append(Image(data=image_data, format="png"))
+
+    return results
 
 
