@@ -28,8 +28,8 @@ async def find_by_text_mcp(search_query: str) -> list[SearchResultsMcp]:
         mcp_results.append(SearchResultsMcp(
             image_path="http://localhost:5173/" + result.image_path,
             description=result.description
-
         ))
+
     return mcp_results
 
 
@@ -47,7 +47,7 @@ async def find_displayable_image_mcp(search_query: str) -> Image:
     """
     text_search = TextSearchRequest(
         searchText=search_query,
-        threshold="yuge"
+        threshold="small"
     )
     search_result = await search_by_text(text_search)
     image_data= base64.b64decode(search_result[0].thumbnail[len("data:image/png;base64,"):])
