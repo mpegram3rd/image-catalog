@@ -3,7 +3,8 @@
 This project was started as an experiment and learning opportunity. As a photographer I have thousands of photos 
 I've taken over the years. I wanted to build a searchable Image Catalog.  As a developer I wanted to work with 
 AI running locally and see how far I can push it to accomplish these goals. It was inspired by some experiments
-I had already done using local AI to generate text descriptions of photos to be used as `alt-text` on social media sites.
+I had already done using local AI to generate text descriptions of photos to be used as `alt-text` on social media 
+sites. If you want to jump straight to the [Architecture Details just click here](#architecture).
 
 ## Goals
 ### Technical Goals
