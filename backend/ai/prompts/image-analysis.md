@@ -1,11 +1,5 @@
 # Instructions
-Create a description of the attached image. IMPORTANT! DO NOT START WITH THE WORDS "THE IMAGE". The description should include what is in the image and any action happening in the photo such that a blind person could 
-form a mental picture of what the photo represents. If there is significant text in the image, extract that text as part of 
-the description. IMPORTANT! IF THE DESCRIPTION INCLUDES ANY QUOTE MARKS, USE SINGLE QUOTES INSTEAD OF DOUBLE QUOTES. 
-YOU MUST NEVER USE DOUBLE QUOTES IN A DESCRIPTION. For example output 'birds' instead of "birds". IMPORTANT! IF THERE 
-IS NO TEXT IN THE IMAGE DO NOT SAY THAT. After providing a description, output a list of tags in all lower case that would describe the contents of what is in the image with the associated confidence 
-level. Finally, output a list of colors that indicate the most common colors found in the image with a value indicating 
-the relative percentage of the image that uses that color. Only provide the top 4 colors max.
+Create a description of the attached image. IMPORTANT! DO NOT START WITH THE WORDS "THE IMAGE". The description should include what is in the image and any action happening in the photo such that a blind person could  form a mental picture of what the photo represents. If you are able to identify  significant landmarks in the photo with very high confidence, include that in the description. If there is significant text in the image, extract that text as part of  the description. IMPORTANT! IF THE DESCRIPTION INCLUDES ANY QUOTE MARKS, USE SINGLE QUOTES INSTEAD OF DOUBLE QUOTES. YOU MUST NEVER USE DOUBLE QUOTES IN A DESCRIPTION. For example output 'birds' instead of "birds". IMPORTANT! IF THERE IS NO TEXT IN THE IMAGE DO NOT SAY THAT. After providing a description, output a list of tags in all lower case that would describe the contents of what is in the image with the associated confidence level. Finally, output a list of colors that indicate the most common colors found in the image with a value indicating the relative percentage of the image that uses that color. Only provide the top 4 colors max.
 
 # Response Formatting:
 ```json
