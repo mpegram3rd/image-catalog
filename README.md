@@ -32,7 +32,7 @@ There are 3 main executables in this solution:
    * Also stores Image Embeddings in a Multimodal [Chroma](https://www.trychroma.com/) Vector DB
 3. The Server
    * Support for both REST APIs and MCP
-   * MCP: (FastMCP)[https://gofastmcp.com/]
-   * REST API: (FastAPI)[https://fastapi.tiangolo.com/]
+   * MCP: [FastMCP](https://gofastmcp.com/)
+   * REST API: [FastAPI](https://fastapi.tiangolo.com/)
 
 ![Architecture Diagram](doc-images/architecture.png)
