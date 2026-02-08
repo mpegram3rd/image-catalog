@@ -17,63 +17,93 @@ from repository.multimodal_repository import add_multimodal
 
 load_dotenv()
 
-def extract_json(response) -> str:
-    return response.choices[0].message.content.strip()
 
-def map_response(response) -> AnalysisResult:
-    json_str = extract_json(response)
-    return AnalysisResult.model_validate_json(json_str)
+class Indexer:
+    """Encapsulates image indexing logic.
 
-async def main() -> None:
+    The original implementation was a standalone async function.  Replacing it with a class
+    gives the caller an instance that holds the client, config and prompt.  It also
+    allows the processing loop to be split into smaller methods.
+    """
 
-    print("Starting Indexer")
-    indexing_time = time.time()
-    config = Config()
+    def __init__(self):
+        self.config = Config()
+        self.client = get_client()
+        self.prompt = None
 
-    client = get_client()
-    print(f"Using LLM model (for Image Analysis): {config.llm_model}\n-------\n")
-    prompt_provider = PromptProvider('ai/prompts')
-    prompt = await prompt_provider.get_prompt_async('image-analysis')
+    @staticmethod
+    def _extract_json(response: object) -> str:
+        return response.choices[0].message.content.strip()
 
-    base_path = Path(config.photos_base_path)
-    processed_images = 0
-    for p in base_path.rglob("*"):
-        if p.is_file() and (p.suffix in ['.jpg', '.png']):
-            print(f"Processing {p}...")
-            total_processing = time.time()
-            processed_images += 1
-            timer = time.time()  # Record start time
+    @staticmethod
+    def _map_response(response: object) -> AnalysisResult:
+        json_str = Indexer._extract_json(response)
+        return AnalysisResult.model_validate_json(json_str)
 
-            image_data = await encode_image_async(p)
+    async def _load_prompt(self) -> str:
+        prompt_provider = PromptProvider('ai/prompts')
+        return await prompt_provider.get_prompt_async('image-analysis')
 
-            response = client.chat.completions.parse(
-                model=config.llm_model,
-                response_format=AnalysisResult,
-                messages=[
-                    ChatCompletionUserMessageParam(
-                        role="user",
-                        content=[
-                            ChatCompletionContentPartTextParam(type="text", text = f"{prompt}"),
-                            ChatCompletionContentPartImageParam(type="image_url", image_url = ImageURL(url=f"data:image/jpeg;base64,{image_data}"))
-                        ]
-                    )
-                ]
-            )
+    async def _process_image(self, p: Path):
+        print(f"Processing {p}...")
+        total_processing = time.time()
+        timer = time.time()
 
-            results = map_response(response)
+        image_data = await encode_image_async(p)
 
-            print(f"- Model analysis took {time.time() - timer:.4f} seconds")
+        response = self.client.chat.completions.parse(
+            model=self.config.llm_model,
+            response_format=AnalysisResult,
+            messages=[
+                ChatCompletionUserMessageParam(
+                    role="user",
+                    content=[
+                        ChatCompletionContentPartTextParam(type="text", text=self.prompt),
+                        ChatCompletionContentPartImageParam(
+                            type="image_url",
+                            image_url=ImageURL(url=f"data:image/jpeg;base64,{image_data}"),
+                        ),
+                    ],
+                )
+            ],
+        )
 
-            thumbnail = await create_thumbnail_as_base64_async(image_data, config.thumbnail_width, config.thumbnail_height)
+        results = self._map_response(response)
 
-            timer = time.time()
+        print(f"- Model analysis took {time.time() - timer:.4f} seconds")
 
-            add_analysis(str(p), results, thumbnail)
-            add_multimodal(str(p), results, thumbnail)
+        thumbnail = await create_thumbnail_as_base64_async(
+            image_data, self.config.thumbnail_width, self.config.thumbnail_height
+        )
 
-            print(f"- Embedding and storing took {time.time() - timer:.4f} seconds")
-            print(f"- Total Processing Time: {time.time() - total_processing:.4f} seconds\n")
-    indexing_end = time.time()
-    print(f"Indexing {processed_images} images took {indexing_end - indexing_time:.4f} seconds")
+        timer = time.time()
 
-asyncio.run(main())
+        add_analysis(str(p), results, thumbnail)
+        add_multimodal(str(p), results, thumbnail)
+
+        print(f"- Embedding and storing took {time.time() - timer:.4f} seconds")
+        print(f"- Total Processing Time: {time.time() - total_processing:.4f} seconds\n")
+
+    async def run(self):
+        print("Starting Indexer")
+        indexing_time = time.time()
+        print(
+            f"Using LLM model (for Image Analysis): {self.config.llm_model}\n-------\n"
+        )
+        self.prompt = await self._load_prompt()
+
+        base_path = Path(self.config.photos_base_path)
+        processed_images = 0
+        for p in base_path.rglob("*"):
+            if p.is_file() and p.suffix in [".jpg", ".png"]:
+                processed_images += 1
+                await self._process_image(p)
+
+        indexing_end = time.time()
+        print(
+            f"Indexing {processed_images} images took {indexing_end - indexing_time:.4f} seconds"
+        )
+
+
+if __name__ == "__main__":
+    asyncio.run(Indexer().run())
