@@ -4,7 +4,7 @@ import logging
 import logging.config
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 def setup_logging(
@@ -51,7 +51,7 @@ def _get_logging_config(
     log_level: int,
     json_format: bool,
     log_file: str | None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Generate logging configuration dictionary.
 
     Args:
@@ -110,7 +110,6 @@ def _get_logging_config(
         "mcp_tools": {"level": log_level, "propagate": False},
         "indexer": {"level": log_level, "propagate": False},
         "server": {"level": log_level, "propagate": False},
-
         # Third-party loggers
         "uvicorn": {"level": "INFO", "propagate": False},
         "uvicorn.access": {"level": "WARNING", "propagate": False},
@@ -159,11 +158,14 @@ def log_performance(func_name: str, duration: float, logger: logging.Logger) -> 
         duration: Execution duration in seconds
         logger: Logger instance to use
     """
-    logger.info("Performance", extra={
-        "function": func_name,
-        "duration_seconds": duration,
-        "duration_ms": duration * 1000,
-    })
+    logger.info(
+        "Performance",
+        extra={
+            "function": func_name,
+            "duration_seconds": duration,
+            "duration_ms": duration * 1000,
+        },
+    )
 
 
 def log_api_request(
@@ -182,9 +184,12 @@ def log_api_request(
         duration: Request duration in seconds
         logger: Logger instance to use
     """
-    logger.info("API Request", extra={
-        "method": method,
-        "path": path,
-        "status_code": status_code,
-        "duration_seconds": duration,
-    })
+    logger.info(
+        "API Request",
+        extra={
+            "method": method,
+            "path": path,
+            "status_code": status_code,
+            "duration_seconds": duration,
+        },
+    )

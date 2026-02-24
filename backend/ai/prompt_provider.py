@@ -2,9 +2,9 @@ import aiofiles
 
 
 class PromptProvider:
-    def __init__(self, prompt_dir: str = 'prompts') -> None:
+    def __init__(self, prompt_dir: str = "prompts") -> None:
         self._prompt_dir = prompt_dir
-        self._prompts = {} # prompt cache
+        self._prompts = {}  # prompt cache
 
     async def get_prompt_async(self, name: str) -> str:
         prompt = self._prompts.get(name, None)
@@ -12,8 +12,7 @@ class PromptProvider:
             return prompt
 
         try:
-
-            async with aiofiles.open(self._prompt_dir + '/' + name + '.md', 'r') as garbin:
+            async with aiofiles.open(self._prompt_dir + "/" + name + ".md") as garbin:
                 prompt = await garbin.read()
             self._prompts[name] = prompt
             return prompt

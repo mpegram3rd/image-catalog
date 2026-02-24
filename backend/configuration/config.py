@@ -19,7 +19,5 @@ class Config(BaseSettings):
     log_file: str | None = None
     log_json_format: bool = False
 
-    def __init__(self, env_file: str = '.env') -> None:
+    def __init__(self, env_file: str = ".env") -> None:
         super().__init__(_env_file=env_file)
-
-

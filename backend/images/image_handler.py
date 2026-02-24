@@ -8,8 +8,9 @@ from PIL import Image
 
 from configuration.logging_config import get_logger, log_performance
 
-BASE64_PNG_PREFIX :Final = "data:image/png;base64,"
+BASE64_PNG_PREFIX: Final = "data:image/png;base64,"
 logger = get_logger(__name__)
+
 
 async def encode_image_async(image_path: str) -> str:
     try:
@@ -19,7 +20,10 @@ async def encode_image_async(image_path: str) -> str:
         logger.error("Could not process image", extra={"image_path": image_path})
         raise
 
-async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: int, thumbnail_height: int) -> str | None:
+
+async def create_thumbnail_as_base64_async(
+    image_base64: str, thumbnail_width: int, thumbnail_height: int
+) -> str | None:
     thumbnail_time = time.time()
     try:
         # Decode the base64 string
@@ -58,4 +62,3 @@ async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: in
     except Exception as e:
         logger.error("Unexpected error during thumbnail generation", extra={"error": str(e)})
         raise
-

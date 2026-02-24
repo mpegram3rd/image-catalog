@@ -1,5 +1,5 @@
 # Ruff configuration for image-catalog backend
-target-version = "py313"
+target-version = "py312"
 line-length = 100
 
 [lint]
