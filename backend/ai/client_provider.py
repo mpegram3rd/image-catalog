@@ -1,8 +1,10 @@
 from openai import OpenAI, AsyncOpenAI
 
 from configuration.config import Config
+from configuration.logging_config import get_logger
 
 config = Config('.env')
+logger = get_logger(__name__)
 client_cache = {
     "sync": None,
     "async": None
@@ -20,15 +22,18 @@ def get_client() -> OpenAI:
         base URL and API key.
     :rtype: OpenAI
     """
-    print(f"Using model provider: {config.llm_provider}")
     if client_cache["sync"] is None:
+        logger.debug("Creating new sync OpenAI client", extra={
+            "provider": config.llm_provider,
+            "base_url": config.llm_url,
+        })
         client_cache["sync"] = OpenAI(
             base_url=config.llm_url,
             api_key=config.llm_api_key
         )
     return client_cache["sync"]
 
-def get_async_client(self) -> AsyncOpenAI:
+def get_async_client() -> AsyncOpenAI:
     """
     Creates and returns an instance of the `AsyncOpenAI` compatible client configured with the
     specified base URL and API key.
@@ -40,10 +45,13 @@ def get_async_client(self) -> AsyncOpenAI:
         base URL and API key.
     :rtype: AsyncOpenAI
     """
-    print(f"Using model provider: {config.llm_provider}")
-    if client_cache["async"]is None:
+    if client_cache["async"] is None:
+        logger.debug("Creating new async OpenAI client", extra={
+            "provider": config.llm_provider,
+            "base_url": config.llm_url,
+        })
         client_cache["async"] = AsyncOpenAI(
-            base_url=self._config.llm_url,
-            api_key=self._config.llm_api_key
+            base_url=config.llm_url,
+            api_key=config.llm_api_key
         )
     return client_cache["async"]

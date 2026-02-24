@@ -19,6 +19,7 @@ app.include_router(image_catalog_router.router)
 origins = [
     "http://localhost",
     "http://localhost:5173",
+    "http://localhost:5174",
 ]
 
 # Enable CORS for all origins (DEVELOPMENT ONLY - NOT RECOMMENDED FOR PRODUCTION)

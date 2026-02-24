@@ -6,15 +6,21 @@ from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
 
 from configuration.config import Config
+from configuration.logging_config import get_logger, log_performance
 from models.api_models import SearchResult
 from models.indexing_models import AnalysisResult, Metadata
 from repository.search_transformer import transform
 
-print("Initializing Metadata Repository")
+logger = get_logger(__name__)
+
+logger.info("Initializing Metadata Repository")
 config = Config()
 
 # Fetch embedding model for multimodal data
-print("- Initializing OpenAI compatible embedding model")
+logger.info("Initializing OpenAI compatible embedding model", extra={
+    "embedding_model": config.llm_embedding_model,
+    "provider": config.llm_provider,
+})
 embedding_func = embedding_functions.OpenAIEmbeddingFunction(
                 api_key=config.llm_api_key,
                 api_base=config.llm_url,
@@ -23,10 +29,12 @@ embedding_func = embedding_functions.OpenAIEmbeddingFunction(
                 model_name=config.llm_embedding_model
             )
 
-print("- Connecting to DB")
+logger.info("Connecting to ChromaDB", extra={
+    "db_path": f"{config.db_base_path}/image_data.db",
+})
 dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/image_data.db")
 
-print("- Setting up Description Collection")
+logger.info("Setting up Description Collection")
 description_collection = dbclient.get_or_create_collection(
     name="descriptions",
     embedding_function=embedding_func,
@@ -37,8 +45,6 @@ description_collection = dbclient.get_or_create_collection(
         )
     )
 )
-
-print()
 
 def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
 
@@ -56,7 +62,8 @@ def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
         documents=[data.description],
         metadatas=[metadata.model_dump()]
     )
-    print(f"  - Adding to Description collection took took {time.time() - timer:.4f} seconds")
+    duration = time.time() - timer
+    log_performance("description_collection_add", duration, logger)
 
 def find_by_text(search_text: str, cutoff_threshold: float) -> list[SearchResult]:
     results = description_collection.query(

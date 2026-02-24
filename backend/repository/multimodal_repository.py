@@ -9,22 +9,27 @@ from chromadb.utils.data_loaders import ImageLoader
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
 
 from configuration.config import Config
+from configuration.logging_config import get_logger, log_performance
 from models.api_models import SearchResult
 from models.indexing_models import AnalysisResult
 from repository.search_transformer import transform
 
-print("Initializing Multimodal Repository")
+logger = get_logger(__name__)
+
+logger.info("Initializing Multimodal Repository")
 config = Config()
 
 # Fetch embedding model for multimodal data
-print("- Initializing Multimodal embedding model")
+logger.info("Initializing OpenCLIP embedding model")
 embedding_function = OpenCLIPEmbeddingFunction()
 
-print("- Connecting to DB")
+logger.info("Connecting to ChromaDB", extra={
+    "db_path": f"{config.db_base_path}/multimodal.db",
+})
 dbclient = chromadb.PersistentClient(path=f"{config.db_base_path}/multimodal.db")
 data_loader = ImageLoader()
 
-print("- Setting up Multimodal Collection")
+logger.info("Setting up Multimodal Collection")
 multimodal_collection =  dbclient.get_or_create_collection(
     name='multimodal_collection',
     embedding_function=embedding_function,
@@ -37,8 +42,6 @@ multimodal_collection =  dbclient.get_or_create_collection(
     )
 )
 
-print()
-
 def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str):
     server_friendly_path = config.photos_url_base + image_path[len(config.photos_base_path):]
 
@@ -48,7 +51,8 @@ def add_multimodal(image_path: str, data: AnalysisResult, thumbnail: str):
         uris=[image_path],
         metadatas=[{"description": data.description, 'thumbnail': thumbnail}],
     )
-    print(f"  - Adding to Multimodal collection took took {time.time() - timer:.4f} seconds")
+    duration = time.time() - timer
+    log_performance("multimodal_collection_add", duration, logger)
 
 def find_by_image(image_data: Image.Image, cutoff_threshold: float) -> list[SearchResult]:
     img_array = np.array(image_data)

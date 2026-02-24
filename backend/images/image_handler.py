@@ -5,14 +5,18 @@ from typing import Final
 
 import aiofiles
 from PIL import Image
+
+from configuration.logging_config import get_logger, log_performance
+
 BASE64_PNG_PREFIX :Final = "data:image/png;base64,"
+logger = get_logger(__name__)
 
 async def encode_image_async(image_path: str) -> str:
     try:
         async with aiofiles.open(image_path, "rb") as image_file:
             return base64.b64encode(await image_file.read()).decode("utf-8")
     except FileNotFoundError:
-        print(f"Error: Could not process image at: '{image_path}'.")
+        logger.error("Could not process image", extra={"image_path": image_path})
         raise
 
 async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: int, thumbnail_height: int) -> str | None:
@@ -46,13 +50,12 @@ async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: in
         thumbnail_image.save(jpeg_buffer, format="PNG", quality=80)
         b64_thumbnail = BASE64_PNG_PREFIX + base64.b64encode(jpeg_buffer.getvalue()).decode("utf-8")
 
-        finish_time = time.time()
-        execution_time = finish_time - thumbnail_time
-        print(f"- Thumbnail generation took took {execution_time:.4f} seconds")
+        execution_time = time.time() - thumbnail_time
+        log_performance("thumbnail_generation", execution_time, logger)
 
         return b64_thumbnail
 
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")  # Catch other potential errors
+        logger.error("Unexpected error during thumbnail generation", extra={"error": str(e)})
         raise
 

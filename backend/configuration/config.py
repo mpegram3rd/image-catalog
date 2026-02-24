@@ -14,6 +14,11 @@ class Config(BaseSettings):
     thumbnail_width: int
     thumbnail_height: int
 
+    # Logging configuration
+    log_level: str = "INFO"
+    log_file: str | None = None
+    log_json_format: bool = False
+
     def __init__(self, env_file: str = '.env') -> None:
         super().__init__(_env_file=env_file)
 
