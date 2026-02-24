@@ -19,5 +19,9 @@ class Config(BaseSettings):
     log_file: str | None = None
     log_json_format: bool = False
 
+    # Server configuration
+    server_host: str = "127.0.0.1"  # Use localhost by default for security
+    server_port: int = 8000
+
     def __init__(self, env_file: str = ".env") -> None:
         super().__init__(_env_file=env_file)

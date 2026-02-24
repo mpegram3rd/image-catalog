@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 class SearchResult(BaseModel):
-    """This represents the results of an image lookup regardless of whether it was done by image matching or text based search"""
+    """Results of an image lookup from either image matching or text based search."""
 
     image_path: Annotated[
         str,
@@ -32,14 +32,14 @@ class SearchResult(BaseModel):
 
 
 class TextSearchRequest(BaseModel):
-    """Text Search Request criteria"""
+    """Text Search Request criteria."""
 
-    searchText: Annotated[str, Field(description="Text to used when searching images")]
+    search_text: Annotated[str, Field(description="Text to used when searching images")]
     multimodal: Annotated[
         bool,
         Field(
-            description="Determines if the search should be performed using the multimodal dataset. "
-            "Default is to search on description"
+            description="Determines if the search should be performed using the multimodal "
+            "dataset. Default is to search on description"
         ),
     ] = False
     threshold: Annotated[
@@ -53,7 +53,7 @@ class TextSearchRequest(BaseModel):
 
 
 class SearchResultsMcp(BaseModel):
-    """This represents the results of an image lookup regardless of whether it was done by image matching or text based search"""
+    """Results of an image lookup from either image matching or text based search."""
 
     image_path: Annotated[str, Field(description="The full URL to view the image that was found")]
     description: Annotated[

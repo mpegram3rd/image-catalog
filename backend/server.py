@@ -41,5 +41,9 @@ async def setup():
 
 
 if __name__ == "__main__":
+    from configuration.config import Config
+
+    config = Config()
     asyncio.run(setup())
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Note: Set SERVER_HOST=0.0.0.0 in .env to allow external connections (development only)
+    uvicorn.run(app, host=config.server_host, port=config.server_port)

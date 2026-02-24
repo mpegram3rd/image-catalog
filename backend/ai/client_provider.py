@@ -9,10 +9,10 @@ client_cache = {"sync": None, "async": None}
 
 
 def get_client() -> OpenAI:
-    """Creates and returns an instance of the `OpenAI` compatible client configured with the
-    specified base URL and API key.
+    """Creates and returns an instance of the `OpenAI` compatible client.
 
-    The function retrieves configuration details such as the model provider,
+    Configured with the specified base URL and API key. The function retrieves
+    configuration details such as the model provider,
     URL, and API key to initialize the `OpenAI` client instance.
 
     :return: An initialized `OpenAI` compatible client instance configured with the
@@ -32,10 +32,10 @@ def get_client() -> OpenAI:
 
 
 def get_async_client() -> AsyncOpenAI:
-    """Creates and returns an instance of the `AsyncOpenAI` compatible client configured with the
-    specified base URL and API key.
+    """Creates and returns an instance of the `AsyncOpenAI` compatible client.
 
-    The function retrieves configuration details such as the model provider,
+    Configured with the specified base URL and API key. The function retrieves
+    configuration details such as the model provider,
     URL, and API key to initialize the `OpenAI` client instance.
 
     :return: An initialized `AsyncOpenAI` compatible client instance configured with the
