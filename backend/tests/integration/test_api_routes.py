@@ -1,13 +1,11 @@
 """Integration tests for API routes."""
 
 import io
-from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
-from PIL import Image
 
-from tests.fixtures.test_data import TestImages, TestSearchData, MockChromaDBData
+from tests.fixtures.test_data import MockChromaDBData, TestImages
 
 
 class TestImageSearchAPI:
@@ -23,12 +21,13 @@ class TestImageSearchAPI:
         img_bytes.seek(0)
 
         # Configure mock response
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(2)
+        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(
+            2
+        )
 
         # Make request
         response = client.post(
-            "/api/search/image",
-            files={"file": ("test.jpg", img_bytes, "image/jpeg")}
+            "/api/search/image", files={"file": ("test.jpg", img_bytes, "image/jpeg")}
         )
 
         # Verify response
@@ -53,11 +52,12 @@ class TestImageSearchAPI:
         img_bytes.seek(0)
 
         # Configure mock for empty results
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_empty_response()
+        mock_repositories[
+            "multimodal"
+        ].query.return_value = MockChromaDBData.create_empty_response()
 
         response = client.post(
-            "/api/search/image",
-            files={"file": ("test.jpg", img_bytes, "image/jpeg")}
+            "/api/search/image", files={"file": ("test.jpg", img_bytes, "image/jpeg")}
         )
 
         assert response.status_code == 200
@@ -71,8 +71,7 @@ class TestImageSearchAPI:
         text_content = io.BytesIO(b"This is not an image")
 
         response = client.post(
-            "/api/search/image",
-            files={"file": ("test.txt", text_content, "text/plain")}
+            "/api/search/image", files={"file": ("test.txt", text_content, "text/plain")}
         )
 
         # Should return an error (PIL will fail to open)
@@ -88,11 +87,7 @@ class TestTextSearchAPI:
         # Configure mock response
         mock_repositories["metadata"].query.return_value = MockChromaDBData.create_query_response(3)
 
-        search_request = {
-            "search_text": "red flower",
-            "multimodal": False,
-            "threshold": "medium"
-        }
+        search_request = {"search_text": "red flower", "multimodal": False, "threshold": "medium"}
 
         response = client.post("/api/search/text", json=search_request)
 
@@ -106,12 +101,14 @@ class TestTextSearchAPI:
     def test_search_by_text_multimodal(self, client: TestClient, mock_repositories):
         """Test multimodal text search."""
         # Configure mock response
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(2)
+        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(
+            2
+        )
 
         search_request = {
             "search_text": "mountain landscape",
             "multimodal": True,
-            "threshold": "small"
+            "threshold": "small",
         }
 
         response = client.post("/api/search/text", json=search_request)
@@ -126,7 +123,7 @@ class TestTextSearchAPI:
         # Missing required field
         invalid_request = {
             "multimodal": False,
-            "threshold": "small"
+            "threshold": "small",
             # missing search_text
         }
 
@@ -134,10 +131,7 @@ class TestTextSearchAPI:
         assert response.status_code == 422
 
         # Invalid threshold
-        invalid_request = {
-            "search_text": "test",
-            "threshold": "invalid_threshold"
-        }
+        invalid_request = {"search_text": "test", "threshold": "invalid_threshold"}
 
         response = client.post("/api/search/text", json=invalid_request)
         assert response.status_code == 422
@@ -145,10 +139,7 @@ class TestTextSearchAPI:
     @pytest.mark.integration
     def test_search_by_text_empty_query(self, client: TestClient):
         """Test text search with empty query."""
-        search_request = {
-            "search_text": "",
-            "multimodal": False
-        }
+        search_request = {"search_text": "", "multimodal": False}
 
         response = client.post("/api/search/text", json=search_request)
         assert response.status_code == 422

@@ -16,7 +16,7 @@ def run_command(cmd: list[str], description: str) -> int:
     print(f"\n🔄 {description}")
     print(f"Running: {' '.join(cmd)}")
 
-    result = subprocess.run(cmd, cwd=Path(__file__).parent)
+    result = subprocess.run(cmd, cwd=Path(__file__).parent, check=False)
 
     if result.returncode == 0:
         print(f"✅ {description} - PASSED")

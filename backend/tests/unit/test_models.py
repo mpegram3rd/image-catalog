@@ -92,20 +92,10 @@ class TestAnalysisResult:
     @pytest.mark.unit
     def test_valid_analysis_result(self):
         """Test creating AnalysisResult with valid data."""
-        tags = [
-            TagData(tag="flower", confidence=0.95),
-            TagData(tag="red", confidence=0.85)
-        ]
-        colors = [
-            ColorData(color="red", frequency=45),
-            ColorData(color="green", frequency=30)
-        ]
+        tags = [TagData(tag="flower", confidence=0.95), TagData(tag="red", confidence=0.85)]
+        colors = [ColorData(color="red", frequency=45), ColorData(color="green", frequency=30)]
 
-        result = AnalysisResult(
-            description="A beautiful red flower",
-            tags=tags,
-            colors=colors
-        )
+        result = AnalysisResult(description="A beautiful red flower", tags=tags, colors=colors)
 
         assert result.description == "A beautiful red flower"
         assert len(result.tags) == 2
@@ -116,11 +106,7 @@ class TestAnalysisResult:
     @pytest.mark.unit
     def test_empty_lists_allowed(self):
         """Test that empty tag and color lists are allowed."""
-        result = AnalysisResult(
-            description="Test description",
-            tags=[],
-            colors=[]
-        )
+        result = AnalysisResult(description="Test description", tags=[], colors=[])
         assert result.tags == []
         assert result.colors == []
 
@@ -130,11 +116,7 @@ class TestAnalysisResult:
         tags = [TagData(tag="test", confidence=0.9)]
         colors = [ColorData(color="blue", frequency=50)]
 
-        original = AnalysisResult(
-            description="Test image",
-            tags=tags,
-            colors=colors
-        )
+        original = AnalysisResult(description="Test image", tags=tags, colors=colors)
 
         # Serialize to JSON
         json_data = original.model_dump_json()
@@ -155,11 +137,7 @@ class TestMetadata:
     def test_valid_metadata(self):
         """Test creating Metadata with valid data."""
         thumbnail = TestImages.create_thumbnail_base64()
-        metadata = Metadata(
-            tags="flower,red,garden",
-            colors="red,green,pink",
-            thumbnail=thumbnail
-        )
+        metadata = Metadata(tags="flower,red,garden", colors="red,green,pink", thumbnail=thumbnail)
 
         assert metadata.tags == "flower,red,garden"
         assert metadata.colors == "red,green,pink"
@@ -168,11 +146,7 @@ class TestMetadata:
     @pytest.mark.unit
     def test_empty_strings_allowed(self):
         """Test that empty strings are allowed for tags and colors."""
-        metadata = Metadata(
-            tags="",
-            colors="",
-            thumbnail="test_thumbnail"
-        )
+        metadata = Metadata(tags="", colors="", thumbnail="test_thumbnail")
         assert metadata.tags == ""
         assert metadata.colors == ""
 
@@ -201,10 +175,7 @@ class TestSearchResult:
         # Invalid distance
         with pytest.raises(ValidationError):
             SearchResult(
-                image_path="/test/path",
-                description="test",
-                thumbnail="test_thumb",
-                distance=-0.1
+                image_path="/test/path", description="test", thumbnail="test_thumb", distance=-0.1
             )
 
     @pytest.mark.unit
@@ -237,14 +208,11 @@ class TestSearchResultsMcp:
         valid_urls = [
             "http://localhost:5173/path/image.jpg",
             "https://example.com/image.png",
-            "/relative/path/image.jpg"
+            "/relative/path/image.jpg",
         ]
 
         for url in valid_urls:
-            result = SearchResultsMcp(
-                image_path=url,
-                description="Test description"
-            )
+            result = SearchResultsMcp(image_path=url, description="Test description")
             assert result.image_path == url
 
 
@@ -274,34 +242,22 @@ class TestTextSearchRequest:
         valid_thresholds = ["small", "medium", "yuge"]
 
         for threshold in valid_thresholds:
-            request = TextSearchRequest(
-                search_text="test",
-                threshold=threshold
-            )
+            request = TextSearchRequest(search_text="test", threshold=threshold)
             assert request.threshold == threshold
 
         # Invalid threshold
         with pytest.raises(ValidationError):
-            TextSearchRequest(
-                search_text="test",
-                threshold="invalid"
-            )
+            TextSearchRequest(search_text="test", threshold="invalid")
 
     @pytest.mark.unit
     def test_multimodal_boolean(self):
         """Test multimodal field accepts boolean values."""
         # True
-        request = TextSearchRequest(
-            search_text="test",
-            multimodal=True
-        )
+        request = TextSearchRequest(search_text="test", multimodal=True)
         assert request.multimodal is True
 
         # False
-        request = TextSearchRequest(
-            search_text="test",
-            multimodal=False
-        )
+        request = TextSearchRequest(search_text="test", multimodal=False)
         assert request.multimodal is False
 
     @pytest.mark.unit

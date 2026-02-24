@@ -1,10 +1,9 @@
 """Unit tests for image processing functionality."""
 
+import asyncio
 import base64
 import io
-import asyncio
-from pathlib import Path
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 import pytest
 from PIL import Image
@@ -12,7 +11,7 @@ from PIL import Image
 from images.image_handler import (
     BASE64_PNG_PREFIX,
     create_thumbnail_as_base64_async,
-    encode_image_async
+    encode_image_async,
 )
 from tests.fixtures.test_data import TestImages
 
@@ -120,7 +119,7 @@ class TestCreateThumbnailAsBase64Async:
         assert result.startswith(BASE64_PNG_PREFIX)
 
         # Decode and verify thumbnail
-        thumbnail_data = result[len(BASE64_PNG_PREFIX):]
+        thumbnail_data = result[len(BASE64_PNG_PREFIX) :]
         decoded = base64.b64decode(thumbnail_data)
         thumbnail = Image.open(io.BytesIO(decoded))
 
@@ -141,7 +140,7 @@ class TestCreateThumbnailAsBase64Async:
         assert result.startswith(BASE64_PNG_PREFIX)
 
         # Verify thumbnail dimensions
-        thumbnail_data = result[len(BASE64_PNG_PREFIX):]
+        thumbnail_data = result[len(BASE64_PNG_PREFIX) :]
         decoded = base64.b64decode(thumbnail_data)
         thumbnail = Image.open(io.BytesIO(decoded))
 
@@ -160,7 +159,7 @@ class TestCreateThumbnailAsBase64Async:
         result = await create_thumbnail_as_base64_async(base64_data, 100, 100)
 
         # Decode thumbnail
-        thumbnail_data = result[len(BASE64_PNG_PREFIX):]
+        thumbnail_data = result[len(BASE64_PNG_PREFIX) :]
         decoded = base64.b64decode(thumbnail_data)
         thumbnail = Image.open(io.BytesIO(decoded))
 
@@ -183,7 +182,7 @@ class TestCreateThumbnailAsBase64Async:
         result = await create_thumbnail_as_base64_async(base64_data, 100, 100)
 
         # Decode thumbnail
-        thumbnail_data = result[len(BASE64_PNG_PREFIX):]
+        thumbnail_data = result[len(BASE64_PNG_PREFIX) :]
         decoded = base64.b64decode(thumbnail_data)
         thumbnail = Image.open(io.BytesIO(decoded))
 
@@ -210,7 +209,7 @@ class TestCreateThumbnailAsBase64Async:
             )
 
             # Decode and check size
-            thumbnail_data = result[len(BASE64_PNG_PREFIX):]
+            thumbnail_data = result[len(BASE64_PNG_PREFIX) :]
             decoded = base64.b64decode(thumbnail_data)
             thumbnail = Image.open(io.BytesIO(decoded))
 
@@ -266,7 +265,7 @@ class TestCreateThumbnailAsBase64Async:
         base64_data = TestImages.image_to_base64(original_image, "JPEG")
 
         # Mock the logger to capture performance logging
-        with patch('images.image_handler.log_performance') as mock_log_perf:
+        with patch("images.image_handler.log_performance") as mock_log_perf:
             result = await create_thumbnail_as_base64_async(base64_data, 100, 100)
 
             # Verify performance was logged
@@ -291,10 +290,7 @@ class TestCreateThumbnailAsBase64Async:
             images_data.append(base64_data)
 
         # Create thumbnails concurrently
-        tasks = [
-            create_thumbnail_as_base64_async(data, 50, 50)
-            for data in images_data
-        ]
+        tasks = [create_thumbnail_as_base64_async(data, 50, 50) for data in images_data]
 
         results = await asyncio.gather(*tasks)
 

@@ -2,9 +2,9 @@
 
 import pytest
 
-from models.api_models import SearchResult, TextSearchRequest
-from models.indexing_models import AnalysisResult, TagData, ColorData
-from tests.fixtures.test_data import TestImages, TestSearchData, MockLLMResponses
+from models.api_models import TextSearchRequest
+from models.indexing_models import AnalysisResult, ColorData, TagData
+from tests.fixtures.test_data import MockLLMResponses, TestImages, TestSearchData
 
 
 class TestBasicFunctionality:

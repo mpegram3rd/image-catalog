@@ -2,7 +2,6 @@
 
 import os
 import tempfile
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -55,7 +54,7 @@ class TestConfig:
             "PHOTOS_URL_BASE": "http://localhost:5173",
             "DB_BASE_PATH": "/tmp/db",
             "THUMBNAIL_WIDTH": "150",
-            "THUMBNAIL_HEIGHT": "150"
+            "THUMBNAIL_HEIGHT": "150",
         }
         env_content = "\n".join([f"{key}={value}" for key, value in required_vars.items()])
         env_file.write_text(env_content)
@@ -77,7 +76,7 @@ class TestConfig:
             **TEST_ENV_VARS,
             "LOG_LEVEL": "DEBUG",
             "LOG_FILE": "/tmp/test.log",
-            "LOG_JSON_FORMAT": "true"
+            "LOG_JSON_FORMAT": "true",
         }
         env_content = "\n".join([f"{key}={value}" for key, value in env_vars.items()])
         env_file.write_text(env_content)
@@ -92,11 +91,7 @@ class TestConfig:
     def test_config_with_server_settings(self, temp_dir):
         """Test configuration with server settings."""
         env_file = temp_dir / ".env"
-        env_vars = {
-            **TEST_ENV_VARS,
-            "SERVER_HOST": "0.0.0.0",
-            "SERVER_PORT": "9000"
-        }
+        env_vars = {**TEST_ENV_VARS, "SERVER_HOST": "0.0.0.0", "SERVER_PORT": "9000"}
         env_content = "\n".join([f"{key}={value}" for key, value in env_vars.items()])
         env_file.write_text(env_content)
 
@@ -124,10 +119,7 @@ class TestConfig:
     def test_config_invalid_integer_values(self, temp_dir):
         """Test that invalid integer values raise ValidationError."""
         env_file = temp_dir / ".env"
-        env_vars = {
-            **TEST_ENV_VARS,
-            "THUMBNAIL_WIDTH": "invalid_integer"
-        }
+        env_vars = {**TEST_ENV_VARS, "THUMBNAIL_WIDTH": "invalid_integer"}
         env_content = "\n".join([f"{key}={value}" for key, value in env_vars.items()])
         env_file.write_text(env_content)
 
@@ -148,14 +140,11 @@ class TestConfig:
             ("1", True),
             ("0", False),
             ("yes", True),
-            ("no", False)
+            ("no", False),
         ]
 
         for bool_str, expected in valid_boolean_values:
-            env_vars = {
-                **TEST_ENV_VARS,
-                "LOG_JSON_FORMAT": bool_str
-            }
+            env_vars = {**TEST_ENV_VARS, "LOG_JSON_FORMAT": bool_str}
             env_content = "\n".join([f"{key}={value}" for key, value in env_vars.items()])
             env_file.write_text(env_content)
 
@@ -167,7 +156,7 @@ class TestConfig:
         """Test loading configuration from environment variables."""
         with patch.dict(os.environ, TEST_ENV_VARS, clear=False):
             # Create empty .env file
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.env', delete=False) as f:
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".env", delete=False) as f:
                 f.write("")
                 temp_env = f.name
 
@@ -195,19 +184,12 @@ class TestConfig:
     def test_config_file_precedence(self, temp_dir):
         """Test that .env file values take precedence over environment variables."""
         env_file = temp_dir / ".env"
-        env_file_vars = {
-            **TEST_ENV_VARS,
-            "LLM_MODEL": "env-file-model",
-            "SERVER_PORT": "7000"
-        }
+        env_file_vars = {**TEST_ENV_VARS, "LLM_MODEL": "env-file-model", "SERVER_PORT": "7000"}
         env_content = "\n".join([f"{key}={value}" for key, value in env_file_vars.items()])
         env_file.write_text(env_content)
 
         # Set different values in environment
-        env_vars = {
-            "LLM_MODEL": "env-var-model",
-            "SERVER_PORT": "8000"
-        }
+        env_vars = {"LLM_MODEL": "env-var-model", "SERVER_PORT": "8000"}
 
         with patch.dict(os.environ, env_vars, clear=False):
             config = Config(env_file=str(env_file))

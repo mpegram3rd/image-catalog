@@ -2,7 +2,7 @@
 
 import base64
 import io
-from typing import Any, Dict, List
+from typing import Any
 
 from PIL import Image
 
@@ -41,14 +41,14 @@ class MockLLMResponses:
             {"tag": "flower", "confidence": 0.95},
             {"tag": "rose", "confidence": 0.90},
             {"tag": "red", "confidence": 0.85},
-            {"tag": "garden", "confidence": 0.70}
+            {"tag": "garden", "confidence": 0.70},
         ],
         "colors": [
             {"color": "red", "frequency": 45},
             {"color": "green", "frequency": 30},
             {"color": "pink", "frequency": 15},
-            {"color": "brown", "frequency": 10}
-        ]
+            {"color": "brown", "frequency": 10},
+        ],
     }
 
     SAMPLE_LANDSCAPE_JSON = {
@@ -57,14 +57,14 @@ class MockLLMResponses:
             {"tag": "landscape", "confidence": 0.98},
             {"tag": "mountain", "confidence": 0.95},
             {"tag": "lake", "confidence": 0.90},
-            {"tag": "nature", "confidence": 0.88}
+            {"tag": "nature", "confidence": 0.88},
         ],
         "colors": [
             {"color": "blue", "frequency": 40},
             {"color": "white", "frequency": 25},
             {"color": "gray", "frequency": 20},
-            {"color": "green", "frequency": 15}
-        ]
+            {"color": "green", "frequency": 15},
+        ],
     }
 
     SAMPLE_PORTRAIT_JSON = {
@@ -73,14 +73,14 @@ class MockLLMResponses:
             {"tag": "portrait", "confidence": 0.95},
             {"tag": "professional", "confidence": 0.85},
             {"tag": "business", "confidence": 0.80},
-            {"tag": "person", "confidence": 0.90}
+            {"tag": "person", "confidence": 0.90},
         ],
         "colors": [
             {"color": "navy", "frequency": 35},
             {"color": "beige", "frequency": 30},
             {"color": "white", "frequency": 25},
-            {"color": "brown", "frequency": 10}
-        ]
+            {"color": "brown", "frequency": 10},
+        ],
     }
 
     @classmethod
@@ -89,7 +89,7 @@ class MockLLMResponses:
         data_map = {
             "rose": cls.SAMPLE_ANALYSIS_JSON,
             "landscape": cls.SAMPLE_LANDSCAPE_JSON,
-            "portrait": cls.SAMPLE_PORTRAIT_JSON
+            "portrait": cls.SAMPLE_PORTRAIT_JSON,
         }
 
         json_data = data_map.get(response_type, cls.SAMPLE_ANALYSIS_JSON)
@@ -97,11 +97,11 @@ class MockLLMResponses:
         return AnalysisResult(
             description=json_data["description"],
             tags=[TagData(**tag) for tag in json_data["tags"]],
-            colors=[ColorData(**color) for color in json_data["colors"]]
+            colors=[ColorData(**color) for color in json_data["colors"]],
         )
 
     @classmethod
-    def get_openai_mock_response(cls, response_type: str = "rose") -> Dict[str, Any]:
+    def get_openai_mock_response(cls, response_type: str = "rose") -> dict[str, Any]:
         """Get a mock OpenAI API response."""
         analysis = cls.get_analysis_result(response_type)
 
@@ -124,18 +124,18 @@ class TestSearchData:
     def create_search_result(
         image_path: str = "/test/path/image1.jpg",
         description: str = "Test image description",
-        distance: float = 0.1
+        distance: float = 0.1,
     ) -> SearchResult:
         """Create a SearchResult object for testing."""
         return SearchResult(
             image_path=image_path,
             description=description,
             thumbnail=TestImages.create_thumbnail_base64(),
-            distance=distance
+            distance=distance,
         )
 
     @staticmethod
-    def create_search_results_list(count: int = 3) -> List[SearchResult]:
+    def create_search_results_list(count: int = 3) -> list[SearchResult]:
         """Create a list of SearchResult objects."""
         results = []
         for i in range(count):
@@ -143,7 +143,7 @@ class TestSearchData:
                 TestSearchData.create_search_result(
                     image_path=f"/test/path/image{i+1}.jpg",
                     description=f"Test image {i+1} description",
-                    distance=0.1 + (i * 0.05)
+                    distance=0.1 + (i * 0.05),
                 )
             )
         return results
@@ -151,25 +151,18 @@ class TestSearchData:
     @staticmethod
     def create_mcp_search_result(
         image_path: str = "http://localhost:5173/test/path/image1.jpg",
-        description: str = "Test MCP image description"
+        description: str = "Test MCP image description",
     ) -> SearchResultsMcp:
         """Create a SearchResultsMcp object for testing."""
-        return SearchResultsMcp(
-            image_path=image_path,
-            description=description
-        )
+        return SearchResultsMcp(image_path=image_path, description=description)
 
     @staticmethod
     def create_text_search_request(
-        search_text: str = "test query",
-        multimodal: bool = False,
-        threshold: str = "small"
+        search_text: str = "test query", multimodal: bool = False, threshold: str = "small"
     ) -> TextSearchRequest:
         """Create a TextSearchRequest object for testing."""
         return TextSearchRequest(
-            search_text=search_text,
-            multimodal=multimodal,
-            threshold=threshold
+            search_text=search_text, multimodal=multimodal, threshold=threshold
         )
 
 
@@ -177,10 +170,7 @@ class MockChromaDBData:
     """Mock ChromaDB query responses."""
 
     @staticmethod
-    def create_query_response(
-        count: int = 2,
-        base_distance: float = 0.1
-    ) -> Dict[str, Any]:
+    def create_query_response(count: int = 2, base_distance: float = 0.1) -> dict[str, Any]:
         """Create a mock ChromaDB query response."""
         ids = [f"http://localhost:5173/test/image{i+1}.jpg" for i in range(count)]
         distances = [base_distance + (i * 0.05) for i in range(count)]
@@ -188,39 +178,35 @@ class MockChromaDBData:
         metadatas = []
 
         for i in range(count):
-            metadatas.append({
-                "tags": f"test,image{i+1},sample",
-                "colors": "red,blue,green",
-                "thumbnail": TestImages.create_thumbnail_base64(),
-                "description": f"Test description for image {i+1}"
-            })
+            metadatas.append(
+                {
+                    "tags": f"test,image{i+1},sample",
+                    "colors": "red,blue,green",
+                    "thumbnail": TestImages.create_thumbnail_base64(),
+                    "description": f"Test description for image {i+1}",
+                }
+            )
 
         return {
             "ids": [ids],
             "distances": [distances],
             "documents": [documents],
-            "metadatas": [metadatas]
+            "metadatas": [metadatas],
         }
 
     @staticmethod
-    def create_empty_response() -> Dict[str, Any]:
+    def create_empty_response() -> dict[str, Any]:
         """Create an empty ChromaDB response."""
-        return {
-            "ids": [[]],
-            "distances": [[]],
-            "documents": [[]],
-            "metadatas": [[]]
-        }
+        return {"ids": [[]], "distances": [[]], "documents": [[]], "metadatas": [[]]}
 
 
 class TestFileSystem:
     """Test file system utilities."""
 
     @staticmethod
-    def create_test_images_structure(base_path: str, count: int = 3) -> List[str]:
+    def create_test_images_structure(base_path: str, count: int = 3) -> list[str]:
         """Create a test directory structure with sample images."""
         from pathlib import Path
-        import tempfile
 
         base = Path(base_path)
         base.mkdir(parents=True, exist_ok=True)
@@ -261,5 +247,5 @@ TEST_ENV_VARS = {
     "THUMBNAIL_HEIGHT": "200",
     "LOG_LEVEL": "DEBUG",
     "SERVER_HOST": "127.0.0.1",
-    "SERVER_PORT": "8000"
+    "SERVER_PORT": "8000",
 }

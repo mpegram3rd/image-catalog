@@ -1,12 +1,10 @@
 """Integration tests for repository layer."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
-from PIL import Image
 
-from models.indexing_models import AnalysisResult, TagData, ColorData
-from tests.fixtures.test_data import MockChromaDBData, TestImages, MockLLMResponses
+from tests.fixtures.test_data import MockChromaDBData, MockLLMResponses, TestImages
 
 
 class TestSearchTransformer:
@@ -41,11 +39,9 @@ class TestSearchTransformer:
             "ids": [["image1", "image2", "image3"]],
             "distances": [[0.05, 0.15, 0.25]],  # Only first two should pass threshold 0.2
             "documents": [["desc1", "desc2", "desc3"]],
-            "metadatas": [[
-                {"thumbnail": "thumb1"},
-                {"thumbnail": "thumb2"},
-                {"thumbnail": "thumb3"}
-            ]]
+            "metadatas": [
+                [{"thumbnail": "thumb1"}, {"thumbnail": "thumb2"}, {"thumbnail": "thumb3"}]
+            ],
         }
 
         results = transform(response, 0.2)
@@ -60,7 +56,7 @@ class TestRepositoryIntegration:
     """Test repository integration with mock ChromaDB."""
 
     @pytest.mark.integration
-    @patch('repository.metadata_repository.description_collection')
+    @patch("repository.metadata_repository.description_collection")
     def test_metadata_repository_search(self, mock_collection):
         """Test metadata repository search functionality."""
         from repository.metadata_repository import find_by_text
@@ -79,11 +75,12 @@ class TestRepositoryIntegration:
         assert results[0].description == "Test description for image 1"
 
     @pytest.mark.integration
-    @patch('repository.multimodal_repository.multimodal_collection')
+    @patch("repository.multimodal_repository.multimodal_collection")
     def test_multimodal_repository_image_search(self, mock_collection):
         """Test multimodal repository image search."""
-        from repository.multimodal_repository import find_by_image
         import numpy as np
+
+        from repository.multimodal_repository import find_by_image
 
         # Configure mock
         mock_collection.query.return_value = MockChromaDBData.create_query_response(1, 0.1)
@@ -105,7 +102,7 @@ class TestRepositoryIntegration:
         assert len(results) == 1
 
     @pytest.mark.integration
-    @patch('repository.multimodal_repository.multimodal_collection')
+    @patch("repository.multimodal_repository.multimodal_collection")
     def test_multimodal_repository_text_search(self, mock_collection):
         """Test multimodal repository text search."""
         from repository.multimodal_repository import find_by_text_mm
@@ -123,7 +120,7 @@ class TestRepositoryIntegration:
         assert len(results) == 2
 
     @pytest.mark.integration
-    @patch('repository.metadata_repository.description_collection')
+    @patch("repository.metadata_repository.description_collection")
     def test_metadata_repository_add_analysis(self, mock_collection):
         """Test adding analysis to metadata repository."""
         from repository.metadata_repository import add_analysis

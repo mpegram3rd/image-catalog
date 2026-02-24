@@ -1,6 +1,6 @@
 """Integration tests for MCP tools."""
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -18,10 +18,12 @@ class TestMCPToolsIntegration:
         from mcp_tools.image_catalog_mcp import find_by_text_mcp
 
         # Configure mock to return search results
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(2, 0.1)
+        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(
+            2, 0.1
+        )
 
         # Mock the search_by_text function
-        with patch('mcp_tools.image_catalog_mcp.search_by_text') as mock_search:
+        with patch("mcp_tools.image_catalog_mcp.search_by_text") as mock_search:
             # Create mock search results
             search_results = TestSearchData.create_search_results_list(2)
             mock_search.return_value = search_results
@@ -50,9 +52,11 @@ class TestMCPToolsIntegration:
         from mcp_tools.image_catalog_mcp import find_by_text_mcp
 
         # Configure mock for empty results
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_empty_response()
+        mock_repositories[
+            "multimodal"
+        ].query.return_value = MockChromaDBData.create_empty_response()
 
-        with patch('mcp_tools.image_catalog_mcp.search_by_text') as mock_search:
+        with patch("mcp_tools.image_catalog_mcp.search_by_text") as mock_search:
             mock_search.return_value = []
 
             results = await find_by_text_mcp("nonexistent query")
@@ -66,9 +70,11 @@ class TestMCPToolsIntegration:
         from mcp_tools.image_catalog_mcp import find_displayable_images_mcp
 
         # Configure mock
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(1, 0.05)
+        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(
+            1, 0.05
+        )
 
-        with patch('mcp_tools.image_catalog_mcp.search_by_text') as mock_search:
+        with patch("mcp_tools.image_catalog_mcp.search_by_text") as mock_search:
             # Create mock search results with thumbnails
             search_results = TestSearchData.create_search_results_list(1)
             mock_search.return_value = search_results
@@ -91,11 +97,10 @@ class TestMCPToolsIntegration:
         """Test that MCP tools convert relative paths to full URLs."""
         from mcp_tools.image_catalog_mcp import find_by_text_mcp
 
-        with patch('mcp_tools.image_catalog_mcp.search_by_text') as mock_search:
+        with patch("mcp_tools.image_catalog_mcp.search_by_text") as mock_search:
             # Create search result with relative path
             search_result = TestSearchData.create_search_result(
-                image_path="/relative/path/image.jpg",
-                description="Test image"
+                image_path="/relative/path/image.jpg", description="Test image"
             )
             mock_search.return_value = [search_result]
 
@@ -111,7 +116,7 @@ class TestMCPToolsIntegration:
         """Test MCP tools error handling."""
         from mcp_tools.image_catalog_mcp import find_by_text_mcp
 
-        with patch('mcp_tools.image_catalog_mcp.search_by_text') as mock_search:
+        with patch("mcp_tools.image_catalog_mcp.search_by_text") as mock_search:
             # Simulate an exception in search
             mock_search.side_effect = Exception("Search failed")
 
@@ -130,10 +135,12 @@ class TestMCPIntegrationWithAPI:
         from mcp_tools.image_catalog_mcp import find_by_text_mcp
 
         # This test ensures the integration between MCP tools and API routes
-        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(1, 0.1)
+        mock_repositories["multimodal"].query.return_value = MockChromaDBData.create_query_response(
+            1, 0.1
+        )
 
         # Import the actual search function to ensure integration
-        with patch('api_routes.image_catalog_router.find_by_text_mm') as mock_repo_search:
+        with patch("api_routes.image_catalog_router.find_by_text_mm") as mock_repo_search:
             mock_repo_search.return_value = TestSearchData.create_search_results_list(1)
 
             results = await find_by_text_mcp("integration test")

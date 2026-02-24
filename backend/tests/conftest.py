@@ -4,8 +4,8 @@ import asyncio
 import base64
 import io
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import AsyncGenerator, Generator
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -13,7 +13,6 @@ from fastapi.testclient import TestClient
 from PIL import Image
 from pydantic import BaseModel
 
-from configuration.config import Config
 from configuration.logging_config import setup_logging
 
 
@@ -107,7 +106,9 @@ def mock_openai_client():
     # Mock structured output parsing
     mock_response = MagicMock()
     mock_response.choices = [MagicMock()]
-    mock_response.choices[0].message.content = '{"description": "A test image", "tags": [{"tag": "test", "confidence": 0.9}], "colors": [{"color": "red", "frequency": 50}]}'
+    mock_response.choices[
+        0
+    ].message.content = '{"description": "A test image", "tags": [{"tag": "test", "confidence": 0.9}], "colors": [{"color": "red", "frequency": 50}]}'
 
     client.chat.completions.parse.return_value = mock_response
     return client
@@ -121,7 +122,9 @@ def mock_async_openai_client():
     # Mock structured output parsing
     mock_response = AsyncMock()
     mock_response.choices = [MagicMock()]
-    mock_response.choices[0].message.content = '{"description": "A test image", "tags": [{"tag": "test", "confidence": 0.9}], "colors": [{"color": "red", "frequency": 50}]}'
+    mock_response.choices[
+        0
+    ].message.content = '{"description": "A test image", "tags": [{"tag": "test", "confidence": 0.9}], "colors": [{"color": "red", "frequency": 50}]}'
 
     client.chat.completions.parse.return_value = mock_response
     return client
@@ -137,10 +140,12 @@ def mock_chromadb_collection():
         "ids": [["test_id_1", "test_id_2"]],
         "distances": [[0.1, 0.3]],
         "documents": [["Test description 1", "Test description 2"]],
-        "metadatas": [[
-            {"tags": "test,image", "colors": "red,blue", "thumbnail": "test_thumbnail_1"},
-            {"tags": "sample,photo", "colors": "green,yellow", "thumbnail": "test_thumbnail_2"}
-        ]]
+        "metadatas": [
+            [
+                {"tags": "test,image", "colors": "red,blue", "thumbnail": "test_thumbnail_1"},
+                {"tags": "sample,photo", "colors": "green,yellow", "thumbnail": "test_thumbnail_2"},
+            ]
+        ],
     }
 
     # Mock add operations
@@ -152,7 +157,7 @@ def mock_chromadb_collection():
 @pytest.fixture
 def mock_config(test_config: TestConfig):
     """Mock configuration for testing."""
-    with patch('configuration.config.Config') as mock:
+    with patch("configuration.config.Config") as mock:
         mock.return_value = test_config
         yield test_config
 
@@ -170,22 +175,22 @@ def client() -> Generator[TestClient, None, None]:
 @pytest.fixture
 def mock_repositories():
     """Mock all repository dependencies."""
-    with patch('repository.metadata_repository.description_collection') as mock_desc, \
-         patch('repository.multimodal_repository.multimodal_collection') as mock_mm:
-
+    with patch("repository.metadata_repository.description_collection") as mock_desc, patch(
+        "repository.multimodal_repository.multimodal_collection"
+    ) as mock_mm:
         # Configure mock behavior
         mock_desc.query.return_value = {
             "ids": [["test_id"]],
             "distances": [[0.1]],
             "documents": [["Test description"]],
-            "metadatas": [[{"thumbnail": "test_thumbnail"}]]
+            "metadatas": [[{"thumbnail": "test_thumbnail"}]],
         }
 
         mock_mm.query.return_value = {
             "ids": [["test_id"]],
             "distances": [[0.1]],
             "documents": [["Test description"]],
-            "metadatas": [[{"description": "Test description", "thumbnail": "test_thumbnail"}]]
+            "metadatas": [[{"description": "Test description", "thumbnail": "test_thumbnail"}]],
         }
 
         yield {"metadata": mock_desc, "multimodal": mock_mm}
@@ -200,15 +205,7 @@ async def run_async_test(coro):
 # Custom markers for test categorization
 def pytest_configure(config):
     """Register custom pytest markers."""
-    config.addinivalue_line(
-        "markers", "unit: mark test as a unit test"
-    )
-    config.addinivalue_line(
-        "markers", "integration: mark test as an integration test"
-    )
-    config.addinivalue_line(
-        "markers", "slow: mark test as slow running"
-    )
-    config.addinivalue_line(
-        "markers", "database: mark test as requiring database"
-    )
+    config.addinivalue_line("markers", "unit: mark test as a unit test")
+    config.addinivalue_line("markers", "integration: mark test as an integration test")
+    config.addinivalue_line("markers", "slow: mark test as slow running")
+    config.addinivalue_line("markers", "database: mark test as requiring database")
