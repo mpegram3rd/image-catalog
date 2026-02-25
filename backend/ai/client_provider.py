@@ -2,6 +2,8 @@ from openai import AsyncOpenAI, OpenAI
 
 from configuration.config import Config
 from configuration.logging_config import get_logger
+from core.exceptions import AIServiceError, ConfigurationError
+from core.retry import AI_SERVICE_RETRY, ai_service_circuit_breaker, retry_on_failure
 
 config = Config(".env")
 logger = get_logger(__name__)
@@ -20,14 +22,42 @@ def get_client() -> OpenAI:
     :rtype: OpenAI
     """
     if client_cache["sync"] is None:
-        logger.debug(
-            "Creating new sync OpenAI client",
-            extra={
-                "provider": config.llm_provider,
-                "base_url": config.llm_url,
-            },
-        )
-        client_cache["sync"] = OpenAI(base_url=config.llm_url, api_key=config.llm_api_key)
+        try:
+            # Validate configuration
+            if not config.llm_url:
+                raise ConfigurationError(
+                    "LLM URL is not configured",
+                    config_field="llm_url",
+                )
+            if not config.llm_api_key:
+                raise ConfigurationError(
+                    "LLM API key is not configured",
+                    config_field="llm_api_key",
+                )
+
+            logger.debug(
+                "Creating new sync OpenAI client",
+                extra={
+                    "provider": config.llm_provider,
+                    "base_url": config.llm_url,
+                },
+            )
+
+            client_cache["sync"] = OpenAI(
+                base_url=config.llm_url,
+                api_key=config.llm_api_key
+            )
+
+        except (ConfigurationError, AIServiceError):
+            raise
+        except Exception as e:
+            logger.error("Failed to create OpenAI client", extra={"error": str(e)})
+            raise AIServiceError(
+                "Failed to create OpenAI client",
+                service="openai",
+                context={"provider": config.llm_provider},
+            ) from e
+
     return client_cache["sync"]
 
 
@@ -43,12 +73,40 @@ def get_async_client() -> AsyncOpenAI:
     :rtype: AsyncOpenAI
     """
     if client_cache["async"] is None:
-        logger.debug(
-            "Creating new async OpenAI client",
-            extra={
-                "provider": config.llm_provider,
-                "base_url": config.llm_url,
-            },
-        )
-        client_cache["async"] = AsyncOpenAI(base_url=config.llm_url, api_key=config.llm_api_key)
+        try:
+            # Validate configuration
+            if not config.llm_url:
+                raise ConfigurationError(
+                    "LLM URL is not configured",
+                    config_field="llm_url",
+                )
+            if not config.llm_api_key:
+                raise ConfigurationError(
+                    "LLM API key is not configured",
+                    config_field="llm_api_key",
+                )
+
+            logger.debug(
+                "Creating new async OpenAI client",
+                extra={
+                    "provider": config.llm_provider,
+                    "base_url": config.llm_url,
+                },
+            )
+
+            client_cache["async"] = AsyncOpenAI(
+                base_url=config.llm_url,
+                api_key=config.llm_api_key
+            )
+
+        except (ConfigurationError, AIServiceError):
+            raise
+        except Exception as e:
+            logger.error("Failed to create AsyncOpenAI client", extra={"error": str(e)})
+            raise AIServiceError(
+                "Failed to create AsyncOpenAI client",
+                service="openai",
+                context={"provider": config.llm_provider},
+            ) from e
+
     return client_cache["async"]

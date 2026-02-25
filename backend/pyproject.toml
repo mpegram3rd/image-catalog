@@ -20,6 +20,7 @@ dependencies = [
 [project.scripts]
 dev = "uvicorn server:app --host 0.0.0.0 --port 8000 --reload"
 index = "python indexer.py"
+validate-config = "python scripts/validate_config.py"
 format = "ruff format ."
 lint = "ruff check ."
 lint-fix = "ruff check --fix ."

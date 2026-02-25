@@ -11,6 +11,8 @@ def setup_logging(
     level: str = "INFO",
     json_format: bool = False,
     log_file: str | None = None,
+    max_size: int = 100 * 1024 * 1024,  # 100MB default
+    backup_count: int = 5,
 ) -> None:
     """Configure structured logging for the application.
 
@@ -18,6 +20,8 @@ def setup_logging(
         level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         json_format: Whether to use JSON format for structured logging
         log_file: Optional log file path. If None, logs only to console
+        max_size: Maximum log file size in bytes before rotation
+        backup_count: Number of backup files to keep
     """
     log_level = getattr(logging, level.upper(), logging.INFO)
 
@@ -27,7 +31,7 @@ def setup_logging(
         log_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Configure logging
-    config = _get_logging_config(log_level, json_format, log_file)
+    config = _get_logging_config(log_level, json_format, log_file, max_size, backup_count)
     logging.config.dictConfig(config)
 
     # Set up uvicorn logger to use our configuration
@@ -51,6 +55,8 @@ def _get_logging_config(
     log_level: int,
     json_format: bool,
     log_file: str | None,
+    max_size: int = 100 * 1024 * 1024,
+    backup_count: int = 5,
 ) -> dict[str, Any]:
     """Generate logging configuration dictionary.
 
@@ -58,6 +64,8 @@ def _get_logging_config(
         log_level: Logging level
         json_format: Whether to use JSON formatting
         log_file: Optional log file path
+        max_size: Maximum log file size in bytes
+        backup_count: Number of backup files to keep
 
     Returns:
         Logging configuration dictionary
@@ -95,8 +103,8 @@ def _get_logging_config(
             "level": log_level,
             "formatter": "detailed" if not json_format else "json",
             "filename": log_file,
-            "maxBytes": 10 * 1024 * 1024,  # 10MB
-            "backupCount": 5,
+            "maxBytes": max_size,
+            "backupCount": backup_count,
         }
 
     loggers = {
@@ -192,4 +200,19 @@ def log_api_request(
             "status_code": status_code,
             "duration_seconds": duration,
         },
+    )
+
+
+def setup_logging_from_config(config: "Config") -> None:  # type: ignore
+    """Setup logging using configuration object.
+
+    Args:
+        config: Application configuration instance
+    """
+    setup_logging(
+        level=config.log_level.value,
+        json_format=config.log_json_format,
+        log_file=config.log_file,
+        max_size=config.log_max_size,
+        backup_count=config.log_backup_count,
     )
