@@ -9,7 +9,8 @@ client_cache = {"sync": None, "async": None}
 
 
 def get_client() -> OpenAI:
-    """Creates and returns an instance of the `OpenAI` compatible client.
+    """
+    Creates and returns an instance of the `OpenAI` compatible client.
 
     Configured with the specified base URL and API key. The function retrieves
     configuration details such as the model provider,
@@ -32,7 +33,8 @@ def get_client() -> OpenAI:
 
 
 def get_async_client() -> AsyncOpenAI:
-    """Creates and returns an instance of the `AsyncOpenAI` compatible client.
+    """
+    Creates and returns an instance of the `AsyncOpenAI` compatible client.
 
     Configured with the specified base URL and API key. The function retrieves
     configuration details such as the model provider,
