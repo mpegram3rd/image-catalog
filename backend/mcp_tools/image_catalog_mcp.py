@@ -20,7 +20,7 @@ async def find_by_text_mcp(search_query: str) -> list[SearchResultsMcp]:
     """
     text_search = TextSearchRequest(
         searchText=search_query,
-        threshold="yuge",
+        threshold="huge",
         multimodal=False
     )
     search_result = await search_by_text(text_search)
