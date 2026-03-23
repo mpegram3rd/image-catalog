@@ -15,4 +15,5 @@ dependencies = [
     "python-multipart>=0.0.21",
     "numpy>=2.4.0",
     "fastmcp>=2.14.2",
+    "uvicorn>=0.42.0"
 ]
