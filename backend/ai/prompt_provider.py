@@ -27,7 +27,7 @@ class PromptProvider:
             name (without extension) will be used as the identifier when retrieving prompts.
         """
         self._prompt_dir = prompt_dir
-        self._prompts = dict[str, str] = {} # prompt cache
+        self._prompts = {} # prompt cache
 
     async def get_prompt_async(self, name: str) -> str:
         """
