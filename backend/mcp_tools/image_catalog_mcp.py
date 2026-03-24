@@ -4,7 +4,7 @@ from fastmcp import FastMCP
 from fastmcp.utilities.types import Image
 from sympy import true
 
-from api_routes.image_catalog_router import search_by_text
+from api.image_catalog_router import search_by_text
 from models.api_models import SearchResultsMcp, TextSearchRequest
 
 image_catalog_mcp = FastMCP("Image Catalog Tools")

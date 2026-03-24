@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
 
-from api_routes import image_catalog_router
+from api import image_catalog_router
 from mcp_tools.image_catalog_mcp import image_catalog_mcp
 
 # Prepare MCP
