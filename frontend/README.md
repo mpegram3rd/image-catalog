@@ -9,7 +9,7 @@ npm run dev
 ```
 
 This will start a server on port `5174`.  
-To use the web app just go to http://localhost:5174
+To use the web app just go to http://localhost:5173
 
 ## Static Assets
 Static assets should be placed in the `public/` folder.  To keep things easy from a configuration 
