@@ -8,7 +8,7 @@ npm ci
 npm run dev
 ```
 
-This will start a server on port `5174`.  
+This will start a server on port `5173`.  
 To use the web app just go to http://localhost:5173
 
 ## Static Assets
