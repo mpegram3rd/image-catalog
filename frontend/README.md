@@ -14,6 +14,7 @@ To use the web app just go to http://localhost:7174
 ## Static Assets
 Static assets should be placed in the `public/` folder.  To keep things easy from a configuration 
 and coding standpoint it is best to copy the images you want included in your Image Catalog to 
-the `public/photos/` folder. This is the default folder provided in the `.env-local-example`
+the `public/photos/` folder. This is the default folder provided in the `.env-local-example` file 
+on the `backend` project.
 
 
