@@ -6,6 +6,8 @@ AI running locally and see how far I can push it to accomplish these goals. It w
 I had already done using local AI to generate text descriptions of photos to be used as `alt-text` on social media 
 sites. If you want to jump straight to the [Architecture Details just click here](#architecture).
 
+Here's a [slide deck](https://docs.google.com/presentation/d/1dj024MvXxp8zRFdmc4cSiUjU8W5au1hW__t-I3vl2vo/edit?usp=sharing) I created that goes along with a demo I've given several times about this project.
+
 ## Goals
 ### Technical Goals
 * Local AI First Approach

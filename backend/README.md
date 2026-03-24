@@ -21,13 +21,13 @@ and generate an API token which will be used in the [Configuration](#configurati
 section below.
 
 ### Some model suggestions to try out:
-***For Inference***:
-- (Small) `Gemma 3n (google/gemma-3n-e4b`
+***For Description Generation***:
+- `Gemma 3n (google/gemma-3n-e4b` (Small) 
   - Fast and lightweight. 
-- (Medium) `Qwen 3 VL 4B (qwen/qwen3-vl-4b)`
+- `Qwen 3 VL 4B (qwen/qwen3-vl-4b)` (Medium) 
   - Slower but had fewer guardrails
   - Has `Tool` support (can be used with the MCP server)
-- (Large) `Gemma 3 12B (google/gemma-3-12b)`
+- `Gemma 3 12B (google/gemma-3-12b)` (Large) 
   - Larger memory footprint
   - Provided the most detailed descriptions of the images
 
