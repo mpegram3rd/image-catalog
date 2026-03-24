@@ -67,7 +67,7 @@ const TextSearch: React.FC<ImageSearchContainerProps> = ({setSearchResults, setL
                     data={[
                         { label: 'Small', value: 'small' },
                         { label: 'Medium', value: 'medium' },
-                        { label: 'Large', value: 'yuge' }
+                        { label: 'Large', value: 'huge' }
                     ]}
                 />
                 <Switch
