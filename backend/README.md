@@ -24,10 +24,10 @@ section below.
 ***For Inference***:
 - (Small) `Gemma 3n (google/gemma-3n-e4b`
   - Fast and lightweight. 
-- (Medium) `Qwen 3 VL 4B (qwen/qwen3-vl-4b)
+- (Medium) `Qwen 3 VL 4B (qwen/qwen3-vl-4b)`
   - Slower but had fewer guardrails
   - Has `Tool` support (can be used with the MCP server)
-- (Large) `Gemma 3 12B (google/gemma-3-12b)
+- (Large) `Gemma 3 12B (google/gemma-3-12b)`
   - Larger memory footprint
   - Provided the most detailed descriptions of the images
 
