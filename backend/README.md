@@ -1,8 +1,8 @@
 # Getting Started
 The backend is managed with `uv` so you should [have that installed](https://docs.astral.sh/uv/getting-started/installation/).
 
-While in the `backend` directory, run `uv sync` to 
-Here's the basic steps to get started.
+While in the `backend` directory, run `uv sync` to create your `Virtual Environment` and
+pull all the dependencies.
 
 ## Model Selection
 You can use any Open AI API compatible model inference/embedding provider. 
@@ -12,13 +12,28 @@ as you could models from [Gemini](https://gemini.google.com/) and [Open AI](http
 There are 2 primary model types required to run this application:
 - Text Embedding: This is separately configurable and is used for storing descriptions and querying the generated descriptions
 - LLM model for Description Generation and for Chatting with the catalog.
-    - A "Vision" enabled model is required for the Description Generation during Indexing
-    - Tool Calling is required for MCP integration but is not required for the Indexer
+    - A `Vision` enabled model is required for the Description Generation during Indexing
+    - `Tool Calling` is required for MCP integration but is not required for the Indexer
 
 Multimodal Embedding is handled by the OpenCLIP model on Huggingface.  It is 
 recommended but I don't believe required that you setup an account on Huggingface
 and generate an API token which will be used in the [Configuration](#configuration)
 section below.
+
+### Some model suggestions to try out:
+***For Inference***:
+- (Small) `Gemma 3n (google/gemma-3n-e4b`
+  - Fast and lightweight. 
+- (Medium) `Qwen 3 VL 4B (qwen/qwen3-vl-4b)
+  - Slower but had fewer guardrails
+  - Has `Tool` support (can be used with the MCP server)
+- (Large) `Gemma 3 12B (google/gemma-3-12b)
+  - Larger memory footprint
+  - Provided the most detailed descriptions of the images
+
+***For Embedding***:
+`Qwen 3` has several different sized text embedding models (0.6B / 4B)
+that you can use for embedding the text descriptions during Indexing.
 
 ## Configuration
 Create a `.env` file based off the provided `.env-local-example` file.
