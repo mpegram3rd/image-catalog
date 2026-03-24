@@ -16,6 +16,7 @@ from chromadb.api import CreateCollectionConfiguration
 from chromadb.api.collection_configuration import CreateHNSWConfiguration
 from chromadb.utils.data_loaders import ImageLoader
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
+from dotenv import load_dotenv
 
 from configuration.config import Config
 from models.api_models import SearchResult
@@ -24,6 +25,10 @@ from repository.search_transformer import transform
 
 print("Initializing Multimodal Repository")
 config = Config()
+
+# Necessary to get HF_TOKEN into the environment and quiet down some "scary" looking logs from
+# the OpenCLIP model download
+load_dotenv()
 
 # This uses OpenCLIP for embedding. Note that if not previously cached
 # this will trigger a download of the model.  This is the only time the internet is
