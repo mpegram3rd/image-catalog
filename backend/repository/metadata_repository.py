@@ -1,3 +1,11 @@
+# =============================================================================
+# Metadata Repository Module
+# =============================================================================
+# This module handles the storage and retrieval of image metadata using ChromaDB.
+# It provides two main operations: adding analysis results to the database and
+# searching for images based on text queries.
+# =============================================================================
+
 import time
 
 import chromadb
@@ -13,7 +21,7 @@ from repository.search_transformer import transform
 print("Initializing Metadata Repository")
 config = Config()
 
-# Fetch embedding model for multimodal data
+# The embedding model for text data uses any OpenAI compatible embedding model.
 print("- Initializing OpenAI compatible embedding model")
 embedding_func = embedding_functions.OpenAIEmbeddingFunction(
                 api_key=config.llm_api_key,
@@ -41,7 +49,17 @@ description_collection = dbclient.get_or_create_collection(
 print()
 
 def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
+    """
+    Adds an image analysis result to the ChromaDB description collection.
 
+    :param image_path: The path to the original image file (used as document ID)
+    :param data: AnalysisResult containing AI-generated description, tags, and colors
+    :param thumbnail: Base64-encoded thumbnail of the image
+
+    :return: None (side effect - adds data to database)
+    """
+
+    # Transform input model to the storage model
     metadata = Metadata(
         tags = ", ".join(list(map(lambda tag: tag.tag, data.tags))),
         colors=", ".join(list(map(lambda color: color.color, data.colors))),
@@ -59,6 +77,14 @@ def add_analysis(image_path: str, data: AnalysisResult, thumbnail: str):
     print(f"  - Adding to Description collection took took {time.time() - timer:.4f} seconds")
 
 def find_by_text(search_text: str, cutoff_threshold: float) -> list[SearchResult]:
+    """
+    Searches for images whose descriptions are similar to the provided input text using a vector based search.
+
+    :param search_text: The text query to search for (e.g., "beach sunset")
+    :param cutoff_threshold: Minimum similarity threshold to filter results
+
+    :return: List of SearchResult objects matching the query
+    """
     results = description_collection.query(
         query_texts=[search_text]
     )

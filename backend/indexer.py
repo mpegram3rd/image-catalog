@@ -1,3 +1,11 @@
+# =============================================================================
+# Image Catalog Indexer Module
+# =============================================================================
+# This module orchestrates the indexing of images for a multimodal search system.
+# It processes image files, analyzes them using an LLM to generate descriptions and tags,
+# creates thumbnails, and stores both text-based and multimodal embeddings in a Vector DB.
+# =============================================================================
+
 import asyncio
 import time
 from pathlib import Path
@@ -18,13 +26,52 @@ from repository.multimodal_repository import add_multimodal
 load_dotenv()
 
 def extract_json(response) -> str:
+    """
+    Extracts the raw JSON string from an LLM response.
+
+    The LLM's parse() method returns a structured response, but we need to
+    manually extract the JSON content from the message for parsing.
+
+    :param response: The ChatCompletionResponse object from OpenAI
+    :return: A cleaned JSON string (stripped of whitespace)
+
+    :raises IndexError: If the response has no choices
+    """
     return response.choices[0].message.content.strip()
 
 def map_response(response) -> AnalysisResult:
+    """
+    Converts the LLM's JSON response into an AnalysisResult Pydantic model.
+
+    This function first extracts the raw JSON from the response, then validates
+    and parses it into our AnalysisResult model which contains structured fields
+    for the image analysis (description, tags, colors).
+
+    :param response: The ChatCompletionResponse object from OpenAI
+    :return: An AnalysisResult instance with parsed data
+
+    :raises ValidationError: If the JSON doesn't match the expected schema
+    """
     json_str = extract_json(response)
     return AnalysisResult.model_validate_json(json_str)
 
 async def main() -> None:
+    """
+    Main entry point for the image indexing process.
+
+    This function orchestrates the complete workflow:
+    1. Loads configuration and initializes the LLM client
+    2. Retrieves the image analysis prompt from a template file
+    3. Iterates through all JPG/PNG images in the base path directory
+    4. For each image: encodes it, analyzes with LLM, creates thumbnail, stores embeddings
+    5. Reports timing statistics for each processing step
+
+    The indexing process uses a multimodal approach where:
+    - Text embeddings are stored for description-based search
+    - Multimodal embeddings are stored for visual similarity search
+
+    :return: None (side effects only)
+    """
 
     print("Starting Indexer")
     indexing_time = time.time()
