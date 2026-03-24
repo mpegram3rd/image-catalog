@@ -8,6 +8,13 @@ from PIL import Image
 BASE64_PNG_PREFIX :Final = "data:image/png;base64,"
 
 async def encode_image_async(image_path: str) -> str:
+    """
+    Asynchronously reads an image file from disk and returns its base64-encoded representation.
+
+    :param image_path: The absolute or relative path to the image file on disk (e.g., '/path/to/image.png').
+    :return: A base64-encoded string representing the image data.
+    :raises FileNotFoundError: If the specified image file does not exist on disk.
+    """
     try:
         async with aiofiles.open(image_path, "rb") as image_file:
             return base64.b64encode(await image_file.read()).decode("utf-8")
@@ -16,6 +23,23 @@ async def encode_image_async(image_path: str) -> str:
         raise
 
 async def create_thumbnail_as_base64_async(image_base64:str, thumbnail_width: int, thumbnail_height: int) -> str | None:
+    """
+    Creates a resized thumbnail from a base64-encoded image and returns the thumbnail as a base64 string.
+
+    This function decodes the provided base64 image, resizes it to fit within the specified
+    thumbnail dimensions while maintaining aspect ratio (using a "fit" strategy), and re-encodes
+    it as base64. The thumbnail is converted to PNG format.
+
+    :param image_base64: A base64-encoded string of the original image data.
+    :param thumbnail_width: The maximum width for the thumbnail in pixels.
+    :param thumbnail_height: The maximum height for the thumbnail in pixels.
+    :return: A base64-encoded string of the resized thumbnail with a PNG data URI prefix.
+             Returns None if an error occurs during processing (though the function will still raise).
+
+    :raises Exception: If any unexpected error occurs during image processing (e.g., invalid base64,
+                      unsupported image format).
+
+    """
     thumbnail_time = time.time()
     try:
         # Decode the base64 string

@@ -1,9 +1,32 @@
+# =============================================================================
+# search_transformer.py - ChromaDB Search Results Transformer
+# =============================================================================
+
 from chromadb import QueryResult
 
 from models.api_models import SearchResult
 
 
 def transform(results: QueryResult, cutoff_threshold: float) -> list[SearchResult]:
+    """
+    Transforms a ChromaDB QueryResult into a filtered list of SearchResult objects.
+
+    The transformation process:
+        1. Extracts the first result's data as a reference point for distance comparison
+        2. Iterates through all results, calculating relative distances from the closest match
+        3. Stops processing when results exceed the cutoff threshold (optimization)
+        4. Builds SearchResult objects with image_path, description, thumbnail, and distance
+
+    Args:
+        results (QueryResult): The raw ChromaDB query result containing ids, metadatas,
+                              distances, and documents from the vector search.
+        cutoff_threshold (float): The maximum relative distance threshold. Results with
+                                  a relative distance >= this value will be excluded.
+
+    Returns:
+        list[SearchResult]: A filtered list of SearchResult objects containing only
+                           the most relevant matches based on distance thresholding.
+    """
 
     search_results: list[SearchResult] = []
 

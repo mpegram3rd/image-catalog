@@ -1,3 +1,10 @@
+# =============================================================================
+# Image Catalog Server - REST API and MCP
+# =============================================================================
+# This module serves as the main entry point for the Image Catalog API server.
+# It coordinates the server initialization for both protocols.
+# =============================================================================
+
 import asyncio
 
 import uvicorn
@@ -8,14 +15,15 @@ from fastmcp import FastMCP
 from api import image_catalog_router
 from mcp_tools.image_catalog_mcp import image_catalog_mcp
 
-# Prepare MCP
+# Prepare the MCP Services
 mcp = FastMCP("CompositeServer")
 mcp_app = mcp.http_app(path='/mcp')
 
-# Prepare APIs
+# Prepare the REST API Services
 app = FastAPI(title="Image Catalog Tools API", lifespan=mcp_app.lifespan)
 app.include_router(image_catalog_router.router)
 
+# CORS management
 origins = [
     "http://localhost",
     "http://localhost:5173",
