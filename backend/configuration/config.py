@@ -3,9 +3,9 @@
 import os
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, Dict, List, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
-from pydantic import Field, ValidationError, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -119,7 +119,7 @@ class Config(BaseSettings):
         gt=0,
         description="Maximum image file size in bytes",
     )
-    supported_formats: List[str] = Field(
+    supported_formats: list[str] = Field(
         default=[".jpg", ".jpeg", ".png"],
         description="Supported image file formats",
     )
@@ -182,7 +182,7 @@ class Config(BaseSettings):
         le=32,
         description="Number of server workers",
     )
-    cors_origins: List[str] = Field(
+    cors_origins: list[str] = Field(
         default=["*"],
         description="CORS allowed origins",
     )
@@ -277,7 +277,7 @@ class Config(BaseSettings):
 
     @field_validator("supported_formats")
     @classmethod
-    def validate_supported_formats(cls, v: List[str]) -> List[str]:
+    def validate_supported_formats(cls, v: list[str]) -> list[str]:
         """Validate supported image formats."""
         formats = [fmt.lower() if fmt.startswith(".") else f".{fmt.lower()}" for fmt in v]
         valid_formats = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"}
@@ -317,7 +317,7 @@ class Config(BaseSettings):
 
         return self
 
-    def get_chroma_settings(self) -> Dict[str, Any]:
+    def get_chroma_settings(self) -> dict[str, Any]:
         """Get ChromaDB connection settings."""
         return {
             "host": self.chroma_host,
@@ -325,7 +325,7 @@ class Config(BaseSettings):
             "collection_prefix": self.chroma_collection_prefix,
         }
 
-    def get_server_settings(self) -> Dict[str, Any]:
+    def get_server_settings(self) -> dict[str, Any]:
         """Get server configuration settings."""
         return {
             "host": self.server_host,
@@ -335,7 +335,7 @@ class Config(BaseSettings):
             "reload": self.reload,
         }
 
-    def get_cors_settings(self) -> Dict[str, Any]:
+    def get_cors_settings(self) -> dict[str, Any]:
         """Get CORS configuration settings."""
         return {
             "allow_origins": self.cors_origins,
@@ -344,7 +344,7 @@ class Config(BaseSettings):
             "allow_headers": ["*"],
         }
 
-    def get_llm_settings(self) -> Dict[str, Any]:
+    def get_llm_settings(self) -> dict[str, Any]:
         """Get LLM configuration settings."""
         return {
             "model": self.llm_model,
@@ -356,7 +356,7 @@ class Config(BaseSettings):
             "max_retries": self.llm_max_retries,
         }
 
-    def validate_configuration(self) -> List[str]:
+    def validate_configuration(self) -> list[str]:
         """Validate the complete configuration and return any warnings."""
         warnings = []
 

@@ -4,8 +4,9 @@ This module provides dependency injection functions that create and configure
 services and repositories for use in FastAPI endpoints and other components.
 """
 
+from collections.abc import Generator
 from functools import lru_cache
-from typing import Annotated, Generator
+from typing import Annotated
 
 from fastapi import Depends
 
@@ -15,11 +16,10 @@ from services.image_service import ImageService
 from services.indexing_service import IndexingService
 from services.search_service import SearchService
 
-
 logger = get_logger(__name__)
 
 
-@lru_cache()
+@lru_cache
 def get_config() -> Config:
     """Get application configuration.
 
@@ -32,9 +32,7 @@ def get_config() -> Config:
     return Config()
 
 
-def get_image_service(
-    config: Annotated[Config, Depends(get_config)]
-) -> ImageService:
+def get_image_service(config: Annotated[Config, Depends(get_config)]) -> ImageService:
     """Get image processing service.
 
     Args:
@@ -105,6 +103,7 @@ async def get_indexing_service(
 # Repository dependency providers
 # These use late imports to avoid circular dependencies during module loading
 
+
 def get_metadata_repository():
     """Get metadata repository instance.
 
@@ -117,6 +116,7 @@ def get_metadata_repository():
     try:
         # Late import to avoid circular dependency
         import repository.metadata_repository as meta_repo
+
         return meta_repo
     except Exception as e:
         logger.error("Failed to import metadata repository", extra={"error": str(e)})
@@ -135,6 +135,7 @@ def get_multimodal_repository():
     try:
         # Late import to avoid circular dependency
         import repository.multimodal_repository as mm_repo
+
         return mm_repo
     except Exception as e:
         logger.error("Failed to import multimodal repository", extra={"error": str(e)})
@@ -142,6 +143,7 @@ def get_multimodal_repository():
 
 
 # Health check dependencies
+
 
 async def check_service_health() -> dict:
     """Check the health of all services.
@@ -160,6 +162,7 @@ async def check_service_health() -> dict:
 
     try:
         import time
+
         health_status["timestamp"] = time.time()
 
         # Check configuration
@@ -235,6 +238,7 @@ async def check_service_health() -> dict:
         # Check if AI client can be created
         try:
             from ai.client_provider import get_client
+
             get_client()
             health_status["services"]["ai_client"] = {"status": "healthy"}
         except Exception as e:
@@ -258,6 +262,7 @@ async def check_service_health() -> dict:
 
 # Utility dependencies for common patterns
 
+
 def get_request_context() -> dict:
     """Get request context information.
 
@@ -268,6 +273,7 @@ def get_request_context() -> dict:
         This can be enhanced to include request ID, user info, etc.
     """
     import time
+
     return {
         "timestamp": time.time(),
         "request_id": None,  # Can be populated from middleware
@@ -275,6 +281,7 @@ def get_request_context() -> dict:
 
 
 # Factory functions for testing and advanced configurations
+
 
 def create_image_service(
     thumbnail_width: int = 200,

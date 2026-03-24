@@ -3,7 +3,7 @@
 import asyncio
 import time
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Optional
 
 from openai.types.chat import (
     ChatCompletionContentPartImageParam,
@@ -16,11 +16,10 @@ from ai.client_provider import get_client
 from ai.prompt_provider import PromptProvider
 from configuration.config import Config
 from configuration.logging_config import get_logger, log_performance
-from core.exceptions import AIServiceError, ImageProcessingError, ValidationError
+from core.exceptions import AIServiceError, ValidationError
 from core.retry import AI_SERVICE_RETRY, ai_service_circuit_breaker, retry_on_failure
 from models.indexing_models import AnalysisResult
 from services.image_service import ImageService
-
 
 logger = get_logger(__name__)
 
@@ -271,8 +270,8 @@ class IndexingService:
         directory_path: str,
         recursive: bool = True,
         max_concurrent: int = 3,
-        supported_extensions: Optional[List[str]] = None,
-    ) -> Tuple[List[str], List[str]]:
+        supported_extensions: Optional[list[str]] = None,
+    ) -> tuple[list[str], list[str]]:
         """Index all images in a directory.
 
         Args:

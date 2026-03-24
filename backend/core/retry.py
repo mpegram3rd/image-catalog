@@ -4,11 +4,11 @@ import asyncio
 import functools
 import random
 import time
-from typing import Any, Callable, List, Optional, Type, Union
+from collections.abc import Callable
+from typing import Optional
 
 from configuration.logging_config import get_logger
 from core.exceptions import AIServiceError, DatabaseError, ServiceUnavailableError
-
 
 logger = get_logger(__name__)
 
@@ -23,7 +23,7 @@ class RetryConfig:
         max_delay: float = 60.0,
         backoff_multiplier: float = 2.0,
         jitter: bool = True,
-        exceptions: Optional[List[Type[Exception]]] = None,
+        exceptions: Optional[list[type[Exception]]] = None,
     ):
         """Initialize retry configuration.
 
@@ -44,7 +44,7 @@ class RetryConfig:
 
     def calculate_delay(self, attempt: int) -> float:
         """Calculate delay for the given attempt number."""
-        delay = self.base_delay * (self.backoff_multiplier ** attempt)
+        delay = self.base_delay * (self.backoff_multiplier**attempt)
         delay = min(delay, self.max_delay)
 
         if self.jitter:
@@ -201,7 +201,7 @@ class CircuitBreaker:
         self,
         failure_threshold: int = 5,
         timeout: float = 60.0,
-        expected_exception: Type[Exception] = Exception,
+        expected_exception: type[Exception] = Exception,
         name: str = "circuit_breaker",
     ):
         """Initialize circuit breaker.
@@ -281,7 +281,7 @@ class CircuitBreaker:
                 self._record_success()
                 return result
 
-            except self.expected_exception as exc:
+            except self.expected_exception:
                 self._record_failure()
                 raise
             except Exception:
@@ -302,7 +302,7 @@ class CircuitBreaker:
                 self._record_success()
                 return result
 
-            except self.expected_exception as exc:
+            except self.expected_exception:
                 self._record_failure()
                 raise
             except Exception:

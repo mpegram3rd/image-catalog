@@ -29,7 +29,7 @@ def validate_environment_config(env: Environment, env_file: str = None) -> bool:
 
     try:
         config = Config.create_for_environment(env, env_file)
-        print(f"✅ Configuration loaded successfully")
+        print("✅ Configuration loaded successfully")
         print(f"   Environment: {config.environment.value}")
         print(f"   LLM Provider: {config.llm_provider.value}")
         print(f"   LLM Model: {config.llm_model}")
@@ -39,7 +39,7 @@ def validate_environment_config(env: Environment, env_file: str = None) -> bool:
         # Run validation checks
         warnings = config.validate_configuration()
         if warnings:
-            print(f"\n⚠️  Configuration warnings:")
+            print("\n⚠️  Configuration warnings:")
             for warning in warnings:
                 print(f"   - {warning}")
 

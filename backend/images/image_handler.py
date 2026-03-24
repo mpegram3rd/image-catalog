@@ -38,7 +38,7 @@ async def encode_image_async(image_path: str) -> str:
             resource_type="image",
             resource_id=image_path,
         ) from e
-    except (IOError, OSError) as e:
+    except OSError as e:
         logger.error("Failed to read image file", extra={"image_path": image_path, "error": str(e)})
         raise ImageProcessingError(
             f"Failed to read image file: {image_path}",

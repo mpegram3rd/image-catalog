@@ -2,15 +2,14 @@
 
 import time
 import uuid
-from typing import Callable
+from collections.abc import Callable
 
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError as PydanticValidationError
 
 from configuration.logging_config import get_logger, log_api_request
-from core.exceptions import ImageCatalogError, ValidationError
-
+from core.exceptions import ImageCatalogError
 
 logger = get_logger(__name__)
 
@@ -98,12 +97,14 @@ async def error_handling_middleware(request: Request, call_next: Callable) -> Re
         # Convert Pydantic errors to our format
         error_details = []
         for error in exc.errors():
-            error_details.append({
-                "field": ".".join(str(loc) for loc in error["loc"]),
-                "message": error["msg"],
-                "type": error["type"],
-                "input": error.get("input"),
-            })
+            error_details.append(
+                {
+                    "field": ".".join(str(loc) for loc in error["loc"]),
+                    "message": error["msg"],
+                    "type": error["type"],
+                    "input": error.get("input"),
+                }
+            )
 
         error_response = {
             "error": {

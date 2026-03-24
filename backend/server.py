@@ -30,7 +30,7 @@ app = FastAPI(
     title="Image Catalog Tools API",
     description="AI-powered image search and cataloging API",
     version="1.0.0",
-    lifespan=mcp_app.lifespan
+    lifespan=mcp_app.lifespan,
 )
 
 # Setup middleware (order matters - error handling should be first)
@@ -59,11 +59,14 @@ app.include_router(image_catalog_router.router)
 # Attach MCP to API server
 app.mount("/ai", mcp_app)
 
-logger.info("FastAPI application initialized", extra={
-    "cors_origins": origins,
-    "mcp_mounted": True,
-    "middleware_configured": True,
-})
+logger.info(
+    "FastAPI application initialized",
+    extra={
+        "cors_origins": origins,
+        "mcp_mounted": True,
+        "middleware_configured": True,
+    },
+)
 
 
 async def setup():
@@ -86,7 +89,7 @@ if __name__ == "__main__":
                 "host": config.server_host,
                 "port": config.server_port,
                 "log_level": config.log_level,
-            }
+            },
         )
 
         # Note: Set SERVER_HOST=0.0.0.0 in .env to allow external connections (development only)

@@ -1,7 +1,7 @@
 """Search service for coordinating image search operations."""
 
 import time
-from typing import List, Optional
+from typing import Optional
 
 from PIL import Image
 
@@ -9,7 +9,6 @@ from configuration.logging_config import get_logger, log_performance
 from core.exceptions import SearchError, ValidationError
 from models.api_models import SearchResult, TextSearchRequest
 from repository.filtering_thresholds import VALID_THRESHOLDS
-
 
 logger = get_logger(__name__)
 
@@ -42,7 +41,7 @@ class SearchService:
         self,
         search_request: TextSearchRequest,
         max_results: Optional[int] = None,
-    ) -> List[SearchResult]:
+    ) -> list[SearchResult]:
         """Perform text-based search for images.
 
         Args:
@@ -139,7 +138,7 @@ class SearchService:
         image: Image.Image,
         threshold: str = None,
         max_results: Optional[int] = None,
-    ) -> List[SearchResult]:
+    ) -> list[SearchResult]:
         """Perform image-based search.
 
         Args:
@@ -241,7 +240,7 @@ class SearchService:
         image_weight: float = 0.3,
         threshold: str = None,
         max_results: Optional[int] = None,
-    ) -> List[SearchResult]:
+    ) -> list[SearchResult]:
         """Perform hybrid search combining text and image queries.
 
         Args:

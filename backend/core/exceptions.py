@@ -5,7 +5,7 @@ error handling throughout the application. Each exception includes context
 information and appropriate HTTP status codes for API responses.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 
 class ImageCatalogError(Exception):
@@ -19,7 +19,7 @@ class ImageCatalogError(Exception):
         self,
         message: str,
         error_code: str = "GENERIC_ERROR",
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         http_status: int = 500,
         cause: Optional[Exception] = None,
     ):
@@ -39,7 +39,7 @@ class ImageCatalogError(Exception):
         self.http_status = http_status
         self.cause = cause
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert exception to dictionary for API responses."""
         result = {
             "error": {
@@ -65,7 +65,7 @@ class ConfigurationError(ImageCatalogError):
         self,
         message: str,
         config_field: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize configuration error.
@@ -97,7 +97,7 @@ class ImageProcessingError(ImageCatalogError):
         message: str,
         image_path: Optional[str] = None,
         operation: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize image processing error.
@@ -132,7 +132,7 @@ class SearchError(ImageCatalogError):
         message: str,
         search_query: Optional[str] = None,
         search_type: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize search error.
@@ -167,7 +167,7 @@ class DatabaseError(ImageCatalogError):
         message: str,
         operation: Optional[str] = None,
         collection: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize database error.
@@ -203,7 +203,7 @@ class AIServiceError(ImageCatalogError):
         service: Optional[str] = None,
         model: Optional[str] = None,
         retry_count: int = 0,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize AI service error.
@@ -241,7 +241,7 @@ class ValidationError(ImageCatalogError):
         message: str,
         field: Optional[str] = None,
         value: Optional[Any] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize validation error.
@@ -278,7 +278,7 @@ class NotFoundError(ImageCatalogError):
         message: str,
         resource_type: Optional[str] = None,
         resource_id: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
     ):
         """Initialize not found error.
 
@@ -310,7 +310,7 @@ class RateLimitError(ImageCatalogError):
         message: str,
         limit_type: Optional[str] = None,
         retry_after: Optional[int] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
     ):
         """Initialize rate limit error.
 
@@ -341,7 +341,7 @@ class ServiceUnavailableError(ImageCatalogError):
         self,
         message: str,
         service: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        context: Optional[dict[str, Any]] = None,
         cause: Optional[Exception] = None,
     ):
         """Initialize service unavailable error.

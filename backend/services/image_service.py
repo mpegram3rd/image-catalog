@@ -3,15 +3,13 @@
 import io
 import time
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 from PIL import Image
 
 from configuration.logging_config import get_logger, log_performance
 from core.exceptions import ImageProcessingError, NotFoundError, ValidationError
-from core.retry import IMAGE_PROCESSING_RETRY, retry_on_failure
 from images.image_handler import create_thumbnail_as_base64_async, encode_image_async
-
 
 logger = get_logger(__name__)
 
@@ -156,6 +154,7 @@ class ImageService:
 
             # Convert to base64 and create thumbnail
             import base64
+
             base64_data = base64.b64encode(image_data).decode("utf-8")
 
             thumbnail = await create_thumbnail_as_base64_async(
@@ -212,7 +211,7 @@ class ImageService:
 
         return True
 
-    def get_supported_formats(self) -> List[str]:
+    def get_supported_formats(self) -> list[str]:
         """Get list of supported image formats.
 
         Returns:
@@ -221,8 +220,8 @@ class ImageService:
         return list(self.supported_formats)
 
     async def batch_process_images(
-        self, image_paths: List[str], max_concurrent: int = 5
-    ) -> List[tuple[str, str, str]]:
+        self, image_paths: list[str], max_concurrent: int = 5
+    ) -> list[tuple[str, str, str]]:
         """Process multiple images concurrently.
 
         Args:

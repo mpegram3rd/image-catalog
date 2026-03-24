@@ -3,7 +3,6 @@ from openai import AsyncOpenAI, OpenAI
 from configuration.config import Config
 from configuration.logging_config import get_logger
 from core.exceptions import AIServiceError, ConfigurationError
-from core.retry import AI_SERVICE_RETRY, ai_service_circuit_breaker, retry_on_failure
 
 config = Config(".env")
 logger = get_logger(__name__)
@@ -43,10 +42,7 @@ def get_client() -> OpenAI:
                 },
             )
 
-            client_cache["sync"] = OpenAI(
-                base_url=config.llm_url,
-                api_key=config.llm_api_key
-            )
+            client_cache["sync"] = OpenAI(base_url=config.llm_url, api_key=config.llm_api_key)
 
         except (ConfigurationError, AIServiceError):
             raise
@@ -94,10 +90,7 @@ def get_async_client() -> AsyncOpenAI:
                 },
             )
 
-            client_cache["async"] = AsyncOpenAI(
-                base_url=config.llm_url,
-                api_key=config.llm_api_key
-            )
+            client_cache["async"] = AsyncOpenAI(base_url=config.llm_url, api_key=config.llm_api_key)
 
         except (ConfigurationError, AIServiceError):
             raise

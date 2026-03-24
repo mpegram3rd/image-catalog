@@ -5,7 +5,7 @@ from PIL import Image
 
 from configuration.logging_config import get_logger
 from core.dependencies import get_image_service, get_search_service
-from core.exceptions import ImageCatalogError, ImageProcessingError, SearchError, ValidationError
+from core.exceptions import ImageCatalogError, ImageProcessingError, ValidationError
 from models.api_models import SearchResult, TextSearchRequest
 from services.image_service import ImageService
 from services.search_service import SearchService
