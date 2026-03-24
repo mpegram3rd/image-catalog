@@ -2,6 +2,13 @@ from pydantic_settings import BaseSettings
 
 
 class Config(BaseSettings):
+    """
+    Application settings loaded from an environment file.
+
+    This configuration object provides typed access to the values used by the
+    backend, including LLM connection details, storage paths, and thumbnail
+    sizing options.
+    """
     llm_model: str
     llm_embedding_model: str
     llm_provider: str
