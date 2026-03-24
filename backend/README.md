@@ -1,7 +1,7 @@
 # Getting Started
 The backend is managed with `uv` so you should [have that installed](https://docs.astral.sh/uv/getting-started/installation/).
 
-While in the `backend` directory, run `uv symc` to 
+While in the `backend` directory, run `uv sync` to 
 Here's the basic steps to get started.
 
 ## Model Selection
