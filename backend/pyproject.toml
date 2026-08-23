@@ -3,17 +3,17 @@ name = "image-catalog"
 version = "0.1.0"
 description = "A searchable catalog of your images"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
     "aiofiles>=25.1.0",
-    "chromadb>=1.4.0",
-    "fastapi[standard]>=0.128.0",
-    "openai>=2.8.1",
-    "pydantic-settings>=2.12.0",
-    "pillow>=12.1.0",
-    "open-clip-torch>=3.2.0",
-    "python-multipart>=0.0.21",
-    "numpy>=2.4.0",
-    "fastmcp>=2.14.2",
-    "uvicorn>=0.42.0"
+    "chromadb==1.5.9",
+    "fastapi[standard]>=0.141.1",
+    "openai>=3.3.1",
+    "pydantic-settings>=2.15.0",
+    "pillow>=12.3.0",
+    "open-clip-torch>=3.3.0",
+    "python-multipart>=0.0.32",
+    "numpy>=2.5.2",
+    "fastmcp>=3.4.7",
+    "uvicorn>=0.52.4",
 ]
