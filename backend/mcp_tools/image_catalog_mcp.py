@@ -51,8 +51,8 @@ async def find_displayable_images_mcp(search_query: str) -> list[Image]:
     """
     text_search = TextSearchRequest(
         searchText=search_query,
-        threshold="small",
-        multimodal = False
+        threshold="medium",
+        multimodal = True
     )
 
     search_result = await search_by_text(text_search)
